@@ -19,7 +19,10 @@ export const portalCategories: PortalCategory[] = [
     slug: "elearning",
     icon: "📚",
     color: "from-emerald-600/20 to-green-900/10",
-    items: [{ id: "on-tap-toan", url: routes.math }],
+    items: [
+      { id: "math-grade-1", url: routes.mathGrade(1) },
+      { id: "math-grade-3", url: routes.mathGrade(3) },
+    ],
   },
   {
     id: "games",
@@ -34,7 +37,8 @@ export const portalCategories: PortalCategory[] = [
 ];
 
 export const ITEM_IDS = {
-  "on-tap-toan": true,
+  "math-grade-1": true,
+  "math-grade-3": true,
   "co-vua": true,
   sudoku: true,
 } as const;
@@ -42,3 +46,6 @@ export const ITEM_IDS = {
 export function getCategoryBySlug(slug: string): PortalCategory | undefined {
   return portalCategories.find((c) => c.slug === slug);
 }
+
+export const elearningCategory = portalCategories.find((c) => c.id === "elearning")!;
+export const gamesCategory = portalCategories.find((c) => c.id === "games")!;

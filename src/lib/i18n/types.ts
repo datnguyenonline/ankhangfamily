@@ -63,6 +63,8 @@ export type Dictionary = {
     heroAltBeach: string;
     heroAltForest: string;
     heroAltMountain: string;
+    viewAllElearning: string;
+    viewAllGames: string;
   };
   login: {
     subtitle: string;
@@ -135,7 +137,8 @@ export type Dictionary = {
     games: { title: string; subtitle: string };
   };
   items: {
-    "on-tap-toan": { title: string; description: string; tags: string[] };
+    "math-grade-1": { title: string; description: string; tags: string[] };
+    "math-grade-3": { title: string; description: string; tags: string[] };
     "co-vua": { title: string; description: string; tags: string[] };
     sudoku: { title: string; description: string; tags: string[] };
   };

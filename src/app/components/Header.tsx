@@ -16,7 +16,6 @@ type HeaderProps = {
 const navLinks = (t: (key: string) => string) => [
   { href: routes.elearning, label: t("nav.elearning") },
   { href: routes.games, label: t("nav.games") },
-  { href: routes.math, label: t("nav.math") },
   { href: routes.leaderboard, label: t("nav.leaderboard") },
 ];
 

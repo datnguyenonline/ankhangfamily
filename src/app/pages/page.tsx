@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import beachHero from "@/app/assets/images/beach-hero.png";
 import { Header } from "@/app/components/Header";
-import { CategoryCard } from "@/app/components/CategoryCard";
-import { portalCategories } from "@/lib/data";
+import { ResourceCard } from "@/app/components/ResourceCard";
+import { elearningCategory, gamesCategory } from "@/lib/data";
 import { routes } from "@/lib/routes";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { getTheme } from "@/lib/theme/server";
@@ -67,13 +67,13 @@ export default async function HomePage() {
 
               <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
                 <Link
-                  href={routes.math}
+                  href="#elearning"
                   className="rounded-full bg-gradient-to-r from-green-500 to-emerald-400 px-6 py-3.5 text-sm font-bold text-black shadow-lg shadow-green-900/40 transition-transform active:scale-95 sm:px-8"
                 >
                   {t("home.ctaMath")}
                 </Link>
                 <Link
-                  href={routes.chess}
+                  href="#games"
                   className="rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30 sm:px-8"
                 >
                   {t("home.ctaChess")}
@@ -82,7 +82,7 @@ export default async function HomePage() {
             </div>
 
             <a
-              href="#categories"
+              href="#elearning"
               className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 transition-colors hover:text-white/80"
               aria-label={t("common.scrollDown")}
             >
@@ -104,45 +104,64 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section
-        id="categories"
-        className="relative bg-theme-deep/95 backdrop-blur-xl"
-      >
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-          <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-green-50 sm:text-3xl">
-              {t("home.categories")}
-            </h2>
-            <p className="mt-2 text-green-400/60">{t("home.categoriesDesc")}</p>
-          </div>
-
-          <Link
-            href={routes.math}
-            className="group mb-8 block overflow-hidden rounded-2xl border border-green-700/40 bg-gradient-to-br from-green-950/60 to-theme-surface p-5 transition-all hover:border-green-500/50 hover:shadow-[0_0_50px_-10px_var(--theme-glow)] sm:p-8"
-          >
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <span className="text-4xl sm:text-5xl">🔢</span>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs uppercase tracking-widest text-green-500">
-                  {t("home.featuredBook")}
-                </p>
-                <h3 className="font-display text-xl font-bold text-green-50 group-hover:text-green-400 sm:text-2xl">
-                  {t("home.featuredTitle")}
-                </h3>
-                <p className="mt-1 text-sm text-green-300/60">
-                  {t("home.featuredDesc")}
+      <section className="relative bg-theme-deep/95 backdrop-blur-xl">
+        <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-20">
+          <div id="elearning" className="scroll-mt-20">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="text-3xl">{elearningCategory.icon}</span>
+              <div>
+                <h2 className="font-display text-xl font-bold text-green-50 sm:text-2xl">
+                  {t("categories.elearning.title")}
+                </h2>
+                <p className="text-sm text-green-400/60">
+                  {t("categories.elearning.subtitle")}
                 </p>
               </div>
-              <span className="hidden text-green-500 transition-transform group-hover:translate-x-1 sm:ml-auto sm:block">
-                →
-              </span>
             </div>
-          </Link>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {portalCategories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {elearningCategory.items.map((item) => (
+                <ResourceCard key={item.id} item={item} />
+              ))}
+            </div>
+
+            <div className="mt-4 text-center">
+              <Link
+                href={routes.elearning}
+                className="text-sm text-green-500/70 hover:text-green-400"
+              >
+                {t("home.viewAllElearning")} →
+              </Link>
+            </div>
+          </div>
+
+          <div id="games" className="mt-14 scroll-mt-20 sm:mt-16">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="text-3xl">{gamesCategory.icon}</span>
+              <div>
+                <h2 className="font-display text-xl font-bold text-green-50 sm:text-2xl">
+                  {t("categories.games.title")}
+                </h2>
+                <p className="text-sm text-green-400/60">
+                  {t("categories.games.subtitle")}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {gamesCategory.items.map((item) => (
+                <ResourceCard key={item.id} item={item} />
+              ))}
+            </div>
+
+            <div className="mt-4 text-center">
+              <Link
+                href={routes.games}
+                className="text-sm text-green-500/70 hover:text-green-400"
+              >
+                {t("home.viewAllGames")} →
+              </Link>
+            </div>
           </div>
         </div>
 

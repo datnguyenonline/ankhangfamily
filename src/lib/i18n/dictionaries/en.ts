@@ -59,6 +59,8 @@ export const en: Dictionary = {
     heroAltBeach: "Sunset beach with palm trees",
     heroAltForest: "Deep green forest with sunbeams",
     heroAltMountain: "Majestic mountain range in morning mist",
+    viewAllElearning: "View all E-Learning",
+    viewAllGames: "View all Games",
   },
   login: {
     subtitle: "Sign in to save scores and join the leaderboard",
@@ -137,11 +139,15 @@ export const en: Dictionary = {
     },
   },
   items: {
-    "on-tap-toan": {
-      title: "Math Practice",
-      description:
-        "500 questions/grade · 10 random per session · Grades 1 to 5",
-      tags: ["Math", "Creative Horizon"],
+    "math-grade-1": {
+      title: "Math Grade 1",
+      description: "500 questions · 10 random/session · Creative Horizon",
+      tags: ["Grade 1", "Math"],
+    },
+    "math-grade-3": {
+      title: "Math Grade 3",
+      description: "500 questions · 10 random/session · Creative Horizon",
+      tags: ["Grade 3", "Math"],
     },
     "co-vua": {
       title: "Chess",

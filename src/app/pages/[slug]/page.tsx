@@ -36,7 +36,7 @@ export default async function CategoryPage({ params }: Props) {
         description={t(`categories.${category.id}.subtitle`)}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-4">
         {category.items.map((item) => (
           <ResourceCard key={item.id} item={item} />
         ))}

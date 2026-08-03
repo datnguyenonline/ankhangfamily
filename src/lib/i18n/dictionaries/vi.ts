@@ -59,6 +59,8 @@ export const vi: Dictionary = {
     heroAltBeach: "Bãi biển hoàng hôn với hàng dừa",
     heroAltForest: "Rừng xanh sâu thẳm với ánh nắng xuyên tán",
     heroAltMountain: "Dãy núi hùng vĩ trong sương sớm",
+    viewAllElearning: "Xem tất cả E-Learning",
+    viewAllGames: "Xem tất cả Games",
   },
   login: {
     subtitle: "Đăng nhập để lưu điểm và tham gia bảng xếp hạng",
@@ -137,11 +139,15 @@ export const vi: Dictionary = {
     },
   },
   items: {
-    "on-tap-toan": {
-      title: "Ôn tập Toán",
-      description:
-        "500 câu/lớp · 10 câu ngẫu nhiên mỗi lần · Lớp 1 đến Lớp 5",
-      tags: ["Toán", "Chân Trời Sáng Tạo"],
+    "math-grade-1": {
+      title: "Toán Lớp 1",
+      description: "500 câu · 10 câu ngẫu nhiên/lần · Chân Trời Sáng Tạo",
+      tags: ["Lớp 1", "Toán"],
+    },
+    "math-grade-3": {
+      title: "Toán Lớp 3",
+      description: "500 câu · 10 câu ngẫu nhiên/lần · Chân Trời Sáng Tạo",
+      tags: ["Lớp 3", "Toán"],
     },
     "co-vua": {
       title: "Cờ vua",
