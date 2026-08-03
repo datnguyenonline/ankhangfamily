@@ -26,8 +26,16 @@ export default async function BangXepHangPage() {
             🏆 Bảng xếp hạng
           </h1>
           <p className="mt-2 text-green-300/60">
-            Xếp hạng theo tổng điểm tích lũy từ các bài ôn tập Toán
+            Xếp hạng theo tổng điểm tích lũy — cần đăng nhập để lưu điểm
           </p>
+          {!currentUserId && (
+            <Link
+              href="/login"
+              className="mt-3 inline-block text-sm text-green-500 hover:text-green-400"
+            >
+              Đăng nhập để tham gia xếp hạng →
+            </Link>
+          )}
         </div>
 
         <div className="space-y-3">

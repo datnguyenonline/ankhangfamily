@@ -19,9 +19,6 @@ function loadGradeQuestions(grade: number): MathQuestion[] {
 
 export async function POST(request: Request) {
   const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   const body = await request.json();
   const { grade, questionIds, answers } = body as {
@@ -51,7 +48,14 @@ export async function POST(request: Request) {
 
   const { correct, details } = validateAnswers(questions, answers);
   const score = calculateScore(correct, questions.length);
-  const updatedUser = await addScore(session.user.id, score);
+
+  let user = null;
+  let scoreSaved = false;
+
+  if (session?.user?.id) {
+    user = await addScore(session.user.id, score);
+    scoreSaved = true;
+  }
 
   const results = questions.map((q, i) => ({
     id: q.id,
@@ -69,6 +73,7 @@ export async function POST(request: Request) {
     score,
     grade,
     results,
-    user: updatedUser,
+    user,
+    scoreSaved,
   });
 }

@@ -35,21 +35,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isLoginPage = nextUrl.pathname === "/login";
-      const isPublicAsset =
-        nextUrl.pathname.startsWith("/api/auth") ||
-        nextUrl.pathname.startsWith("/_next") ||
-        nextUrl.pathname.includes(".");
-
-      if (isPublicAsset) return true;
-      if (isLoginPage) {
-        if (isLoggedIn) return Response.redirect(new URL("/", nextUrl));
-        return true;
-      }
-      return isLoggedIn;
-    },
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;

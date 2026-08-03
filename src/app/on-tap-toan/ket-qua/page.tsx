@@ -10,6 +10,7 @@ type QuizResult = {
   total: number;
   score: number;
   grade: number;
+  scoreSaved: boolean;
   results: Array<{
     id: string;
     question: string;
@@ -23,7 +24,7 @@ type QuizResult = {
     name: string;
     totalScore: number;
     quizzesCompleted: number;
-  };
+  } | null;
 };
 
 export default function KetQuaPage() {
@@ -72,7 +73,7 @@ export default function KetQuaPage() {
           <div className="mt-8 grid grid-cols-3 gap-4">
             <div className="rounded-xl bg-green-950/40 p-4">
               <p className="text-3xl font-bold text-green-400">{result.score}</p>
-              <p className="text-xs text-green-600">Điểm cộng</p>
+              <p className="text-xs text-green-600">Điểm bài này</p>
             </div>
             <div className="rounded-xl bg-green-950/40 p-4">
               <p className="text-3xl font-bold text-green-400">
@@ -86,13 +87,25 @@ export default function KetQuaPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-sm text-green-300/60">
-            Tổng điểm của {result.user.name}:{" "}
-            <span className="font-semibold text-green-400">
-              {result.user.totalScore}
-            </span>{" "}
-            ({result.user.quizzesCompleted} bài đã làm)
-          </p>
+          {result.scoreSaved && result.user ? (
+            <p className="mt-6 text-sm text-green-300/60">
+              Tổng điểm của {result.user.name}:{" "}
+              <span className="font-semibold text-green-400">
+                {result.user.totalScore}
+              </span>{" "}
+              ({result.user.quizzesCompleted} bài đã làm)
+            </p>
+          ) : (
+            <div className="mt-6 rounded-xl border border-green-800/30 bg-green-950/30 px-4 py-3">
+              <p className="text-sm text-green-300/70">
+                Điểm chưa được lưu.{" "}
+                <Link href="/login" className="font-medium text-green-400 hover:underline">
+                  Đăng nhập
+                </Link>{" "}
+                để cộng điểm vào bảng xếp hạng.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="mt-8 space-y-3">

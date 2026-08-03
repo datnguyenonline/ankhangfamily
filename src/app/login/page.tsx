@@ -1,11 +1,14 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useState, Suspense } from "react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,7 +32,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/");
+    router.push(callbackUrl);
     router.refresh();
   }
 
@@ -46,7 +49,7 @@ export default function LoginPage() {
             An Khang Family
           </h1>
           <p className="mt-2 text-sm text-green-400/60">
-            Đăng nhập để truy cập cổng học tập gia đình
+            Đăng nhập để lưu điểm và tham gia bảng xếp hạng
           </p>
         </div>
 
@@ -110,9 +113,17 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-xs text-green-700/80">
-          Chỉ dành cho thành viên gia đình An Khang
+          Không bắt buộc — chỉ cần khi muốn lưu điểm
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
