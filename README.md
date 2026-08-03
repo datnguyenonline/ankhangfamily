@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# An Khang Family — Learning Portal
 
-## Getting Started
+Trang tổng hợp e-learning, games, reading, videos và creativity cho gia đình An Khang.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **NextAuth.js v5** (đăng nhập)
+
+## Tính năng
+
+- 🔐 Đăng nhập bảo vệ toàn bộ portal
+- 📚 E-Learning — Khan Academy, Duolingo, Scratch...
+- 🎮 Games — Coolmath, Chess, TypingClub...
+- 📖 Reading — StoryWeaver, Gutenberg, Epic...
+- 🎬 Videos — YouTube Kids, TED-Ed, Crash Course...
+- 🎨 Creativity — Canva, MuseScore, Tinkercad...
+
+## Chạy local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Đăng nhập mặc định
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Email | Mật khẩu |
+|-------|----------|
+| `admin@ankhangfamily.com` | `AnKhang2026!` |
 
-## Learn More
+> ⚠️ Đổi mật khẩu trên production bằng cách set `AUTH_USER_PASSWORD_HASH` trong env Vercel.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push code lên GitHub
+2. Import project trên [vercel.com](https://vercel.com)
+3. Thêm Environment Variables:
+   - `AUTH_SECRET` — chuỗi random (openssl rand -base64 32)
+   - `AUTH_URL` — URL production (vd: https://ankhangfamily.vercel.app)
+   - `AUTH_USER_EMAIL` — email đăng nhập
+   - `AUTH_USER_PASSWORD_HASH` — bcrypt hash mật khẩu
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tạo hash mật khẩu mới
 
-## Deploy on Vercel
+```bash
+node -e "require('bcryptjs').hash('MAT_KHAU_MOI', 10).then(console.log)"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private — Gia đình An Khang
