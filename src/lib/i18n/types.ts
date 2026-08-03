@@ -162,6 +162,7 @@ export type Dictionary = {
     "math-grade-3": { title: string; description: string; tags: string[] };
     "co-vua": { title: string; description: string; tags: string[] };
     sudoku: { title: string; description: string; tags: string[] };
+    coding: { title: string; description: string; tags: string[] };
     typing: { title: string; description: string; tags: string[] };
   };
   chess: {
@@ -192,6 +193,29 @@ export type Dictionary = {
     winTitle: string;
     clear: string;
     complete: string;
+    levels: Array<{ label: string; description: string }>;
+  };
+  coding: {
+    title: string;
+    subtitle: string;
+    familyGames: string;
+    menuDesc: string;
+    buildHint: string;
+    forward: string;
+    turnLeft: string;
+    turnRight: string;
+    run: string;
+    undo: string;
+    clear: string;
+    emptyQueue: string;
+    commandCount: string;
+    maxCommands: string;
+    running: string;
+    crashed: string;
+    missedGoal: string;
+    winTitle: string;
+    complete: string;
+    scoreFailed: string;
     levels: Array<{ label: string; description: string }>;
   };
   typing: {

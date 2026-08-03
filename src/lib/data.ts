@@ -33,6 +33,7 @@ export const portalCategories: PortalCategory[] = [
     items: [
       { id: "co-vua", url: routes.chess },
       { id: "sudoku", url: routes.sudoku },
+      { id: "coding", url: routes.coding },
     ],
   },
 ];
@@ -43,6 +44,7 @@ export const ITEM_IDS = {
   typing: true,
   "co-vua": true,
   sudoku: true,
+  coding: true,
 } as const;
 
 export function getCategoryBySlug(slug: string): PortalCategory | undefined {

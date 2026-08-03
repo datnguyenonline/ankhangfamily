@@ -8,6 +8,7 @@ export const routes = {
   games: "/games",
   chess: "/games/chess",
   sudoku: "/games/sudoku",
+  coding: "/games/coding",
   math: "/math",
   mathResults: "/math/results",
   leaderboard: "/leaderboard",
