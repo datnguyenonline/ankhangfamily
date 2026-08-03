@@ -6,7 +6,7 @@ import { FormEvent, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export default function LoginPage() {
     setLoading(true);
 
     const result = await signIn("credentials", {
-      email,
+      username,
       password,
       redirect: false,
     });
@@ -25,7 +25,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Email hoặc mật khẩu không đúng");
+      setError("Tên đăng nhập hoặc mật khẩu không đúng");
       return;
     }
 
@@ -57,19 +57,19 @@ export default function LoginPage() {
           <div className="space-y-5">
             <div>
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="mb-1.5 block text-sm font-medium text-green-300/80"
               >
-                Email
+                Tên đăng nhập
               </label>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
-                autoComplete="email"
-                placeholder="admin@ankhangfamily.com"
+                autoComplete="username"
+                placeholder="giaan, dinhkhang..."
                 className="w-full rounded-lg border border-green-900/50 bg-[#050805] px-4 py-3 text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
               />
             </div>
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                placeholder="••••••••"
+                placeholder="••••••"
                 className="w-full rounded-lg border border-green-900/50 bg-[#050805] px-4 py-3 text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
               />
             </div>

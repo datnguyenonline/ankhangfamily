@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { CategoryCard } from "@/components/CategoryCard";
 import { portalCategories } from "@/lib/data";
@@ -26,6 +27,31 @@ export default function HomePage() {
             Tổng hợp e-learning, trò chơi, đọc sách, video và sáng tạo — tất cả
             ở một nơi, an toàn cho cả gia đình.
           </p>
+        </section>
+
+        <section className="mb-16">
+          <Link
+            href="/on-tap-toan"
+            className="group block overflow-hidden rounded-2xl border border-green-700/40 bg-gradient-to-br from-green-950/60 to-[#0d120d] p-8 transition-all hover:border-green-500/50 hover:shadow-[0_0_50px_-10px_rgba(34,197,94,0.3)]"
+          >
+            <div className="flex items-center gap-6">
+              <span className="text-5xl">🔢</span>
+              <div>
+                <p className="text-xs uppercase tracking-widest text-green-500">
+                  Chân Trời Sáng Tạo
+                </p>
+                <h2 className="font-display text-2xl font-bold text-green-50 group-hover:text-green-400">
+                  Ôn tập Toán — Lớp 1 đến Lớp 5
+                </h2>
+                <p className="mt-1 text-sm text-green-300/60">
+                  500 câu/lớp · 10 câu ngẫu nhiên/lần · Bảng xếp hạng
+                </p>
+              </div>
+              <span className="ml-auto hidden text-green-500 transition-transform group-hover:translate-x-1 sm:block">
+                →
+              </span>
+            </div>
+          </Link>
         </section>
 
         <section>

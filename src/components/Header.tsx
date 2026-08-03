@@ -25,11 +25,11 @@ export function Header() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {[
+            { href: "/on-tap-toan", label: "Ôn tập Toán" },
+            { href: "/bang-xep-hang", label: "Xếp hạng" },
             { href: "/elearning", label: "E-Learning" },
             { href: "/games", label: "Games" },
             { href: "/reading", label: "Reading" },
-            { href: "/videos", label: "Videos" },
-            { href: "/creativity", label: "Creativity" },
           ].map((link) => (
             <Link
               key={link.href}

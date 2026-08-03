@@ -1,0 +1,26 @@
+[
+  {
+    "userId": "1",
+    "username": "giaan",
+    "name": "Gia An",
+    "totalScore": 0,
+    "quizzesCompleted": 0,
+    "lastPlayedAt": ""
+  },
+  {
+    "userId": "2",
+    "username": "dinhkhang",
+    "name": "Đinh Khang",
+    "totalScore": 0,
+    "quizzesCompleted": 0,
+    "lastPlayedAt": ""
+  },
+  {
+    "userId": "3",
+    "username": "admin",
+    "name": "Gia đình An Khang",
+    "totalScore": 0,
+    "quizzesCompleted": 0,
+    "lastPlayedAt": ""
+  }
+]

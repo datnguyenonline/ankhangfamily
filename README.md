@@ -1,6 +1,6 @@
 # An Khang Family — Learning Portal
 
-Trang tổng hợp e-learning, games, reading, videos và creativity cho gia đình An Khang.
+Trang tổng hợp e-learning, games, reading, videos và ôn tập Toán cho gia đình An Khang.
 
 ## Tech Stack
 
@@ -12,11 +12,24 @@ Trang tổng hợp e-learning, games, reading, videos và creativity cho gia đ�
 ## Tính năng
 
 - 🔐 Đăng nhập bảo vệ toàn bộ portal
-- 📚 E-Learning — Khan Academy, Duolingo, Scratch...
-- 🎮 Games — Coolmath, Chess, TypingClub...
-- 📖 Reading — StoryWeaver, Gutenberg, Epic...
-- 🎬 Videos — YouTube Kids, TED-Ed, Crash Course...
-- 🎨 Creativity — Canva, MuseScore, Tinkercad...
+- 🔢 **Ôn tập Toán** — 500 câu/lớp (lớp 1–5), bộ sách Chân Trời Sáng Tạo
+- 🏆 Bảng xếp hạng điểm tích lũy
+- 📚 E-Learning, 🎮 Games, 📖 Reading, 🎬 Videos, 🎨 Creativity
+
+## Tài khoản
+
+| Username | Mật khẩu | Ghi chú |
+|----------|----------|---------|
+| `giaan` | `123456` | Gia An |
+| `dinhkhang` | `123456` | Đinh Khang |
+| `admin` | `AnKhang2026!` | Quản trị |
+
+## Ôn tập Toán
+
+- Truy cập `/on-tap-toan` → chọn lớp 1–5
+- Mỗi lần làm bài: **10 câu trắc nghiệm ngẫu nhiên** từ ngân hàng 500 câu
+- Sau khi nộp bài → trang kết quả + cộng điểm vào bảng xếp hạng
+- Điểm = (số câu đúng / 10) × 100
 
 ## Chạy local
 
@@ -25,31 +38,24 @@ npm install
 npm run dev
 ```
 
-Mở [http://localhost:3000](http://localhost:3000)
+Tạo lại ngân hàng câu hỏi (nếu cần):
 
-### Đăng nhập mặc định
-
-| Email | Mật khẩu |
-|-------|----------|
-| `admin@ankhangfamily.com` | `AnKhang2026!` |
-
-> ⚠️ Đổi mật khẩu trên production bằng cách set `AUTH_USER_PASSWORD_HASH` trong env Vercel.
+```bash
+npm run generate:math
+```
 
 ## Deploy Vercel
 
-1. Push code lên GitHub
-2. Import project trên [vercel.com](https://vercel.com)
-3. Thêm Environment Variables:
-   - `AUTH_SECRET` — chuỗi random (openssl rand -base64 32)
-   - `AUTH_URL` — URL production (vd: https://ankhangfamily.vercel.app)
-   - `AUTH_USER_EMAIL` — email đăng nhập
-   - `AUTH_USER_PASSWORD_HASH` — bcrypt hash mật khẩu
+Environment Variables:
 
-## Tạo hash mật khẩu mới
+| Variable | Mô tả |
+|----------|-------|
+| `AUTH_SECRET` | Chuỗi random (openssl rand -base64 32) |
+| `AUTH_URL` | https://ankhangfamily.vercel.app |
+| `UPSTASH_REDIS_REST_URL` | (Khuyến nghị) Lưu điểm bảng xếp hạng |
+| `UPSTASH_REDIS_REST_TOKEN` | Token Upstash Redis |
 
-```bash
-node -e "require('bcryptjs').hash('MAT_KHAU_MOI', 10).then(console.log)"
-```
+> Bảng xếp hạng trên Vercel cần Upstash Redis (free tier) để lưu điểm lâu dài. Không có Redis thì dùng bộ nhớ tạm (reset khi server restart).
 
 ## License
 

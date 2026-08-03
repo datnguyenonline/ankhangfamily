@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import { findUserByLogin } from "@/lib/users";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -8,29 +8,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Tên đăng nhập", type: "text" },
+        password: { label: "Mật khẩu", type: "password" },
       },
       async authorize(credentials) {
-        const email = credentials?.email as string;
+        const username = credentials?.username as string;
         const password = credentials?.password as string;
 
-        if (!email || !password) return null;
+        if (!username || !password) return null;
 
-        const validEmail = process.env.AUTH_USER_EMAIL ?? "admin@ankhangfamily.com";
-        const validPasswordHash =
-          process.env.AUTH_USER_PASSWORD_HASH ??
-          "$2b$10$Xh8dNmQmPsuvnaUR9AsIduNiqaVNOgGJWhZULj7yQKz0.zDcYMQyS";
-
-        if (email !== validEmail) return null;
-
-        const isValid = await bcrypt.compare(password, validPasswordHash);
-        if (!isValid) return null;
+        const user = await findUserByLogin(username, password);
+        if (!user) return null;
 
         return {
-          id: "1",
-          name: "Gia đình An Khang",
-          email: validEmail,
+          id: user.id,
+          name: user.name,
+          email: user.email ?? `${user.username}@ankhangfamily.local`,
         };
       },
     }),
