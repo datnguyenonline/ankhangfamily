@@ -20,14 +20,39 @@ function pickWrong(correct, pool, count = 3) {
 }
 
 function makeOptions(correct, pool) {
-  const wrong = pickWrong(correct, pool, 3);
-  const options = shuffle([String(correct), ...wrong.map(String)]);
-  const correctIndex = options.indexOf(String(correct));
-  return { options, correctIndex };
+  const correctStr = String(correct);
+  const wrong = pickWrong(correct, pool, 20);
+  const options = [correctStr];
+  const seen = new Set([correctStr]);
+
+  for (const w of wrong) {
+    const s = String(w);
+    if (!seen.has(s) && options.length < 4) {
+      seen.add(s);
+      options.push(s);
+    }
+  }
+
+  let offset = 1;
+  while (options.length < 4) {
+    const candidate = String(Number(correctStr) + offset);
+    if (!seen.has(candidate)) {
+      seen.add(candidate);
+      options.push(candidate);
+    }
+    offset += 1;
+  }
+
+  const shuffled = shuffle(options);
+  return { options: shuffled, correctIndex: shuffled.indexOf(correctStr) };
 }
 
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b);
 }
 
 const BOOK = "Chân Trời Sáng Tạo";
@@ -48,9 +73,10 @@ function generateGrade1() {
     let q;
 
     if (topic === "Số đếm") {
-      const n = randInt(0, 100);
+      const n = randInt(0, 99);
+      const ans = n + 1;
       const pool = Array.from({ length: 101 }, (_, x) => x);
-      const { options, correctIndex } = makeOptions(n, pool);
+      const { options, correctIndex } = makeOptions(ans, pool);
       q = {
         question: `Số liền sau của ${n} là số nào?`,
         options,
@@ -103,17 +129,11 @@ function generateGrade1() {
       };
     } else if (topic === "Thời gian") {
       const hour = randInt(1, 12);
-      const pool = Array.from({ length: 12 }, (_, x) => x + 1);
-      const { options, correctIndex } = makeOptions(hour, pool);
+      const options = shuffle(["Giờ", "Phút", "Giây", String(hour)]);
       q = {
         question: `Kim ngắn chỉ số ${hour} trên đồng hồ. Kim ngắn chỉ gì?`,
-        options: shuffle([
-          "Giờ",
-          "Phút",
-          "Giây",
-          String(hour),
-        ]),
-        correctIndex: 0,
+        options,
+        correctIndex: options.indexOf("Giờ"),
         topic,
       };
     } else {
@@ -189,12 +209,15 @@ function generateGrade2() {
       const a = notes[randInt(0, notes.length - 1)];
       const b = notes[randInt(0, notes.length - 1)];
       const sum = a + b;
-      const pool = notes.concat([sum + 1000, sum - 1000, sum + 5000]);
-      const { options, correctIndex } = makeOptions(sum, pool);
+      const wrongPool = notes.concat([sum + 1000, sum - 1000, sum + 5000, sum + 2000]);
+      const wrong = pickWrong(sum, wrongPool, 3);
+      const options = shuffle([sum, ...wrong]).map((n) =>
+        n.toLocaleString("vi-VN")
+      );
       q = {
         question: `${a.toLocaleString("vi-VN")} + ${b.toLocaleString("vi-VN")} = ? đồng`,
-        options: options.map((o) => Number(o).toLocaleString("vi-VN")),
-        correctIndex,
+        options,
+        correctIndex: options.indexOf(sum.toLocaleString("vi-VN")),
         topic,
       };
     }
@@ -319,12 +342,12 @@ function generateGrade4() {
       const gcd = (x, y) => (y === 0 ? x : gcd(y, x % y));
       const g = gcd(num, den);
       const ans = `${num / g}/${den / g}`;
-      const options = shuffle([
-        ans,
-        `${a + c}/${b + d}`,
-        `${a * c}/${b * d}`,
-        `${num}/${den}`,
-      ]);
+      const options = shuffle(
+        [...new Set([ans, `${a + c}/${b + d}`, `${a * c}/${b * d}`, `${num}/${den}`])].slice(0, 4)
+      );
+      while (options.length < 4) {
+        options.push(`${randInt(1, 9)}/${randInt(2, 12)}`);
+      }
       q = {
         question: `${a}/${b} + ${c}/${d} = ? (rút gọn)`,
         options,
@@ -354,10 +377,10 @@ function generateGrade4() {
       const { options, correctIndex } = makeOptions(ans, pool);
       q = { question: `${n} : ${div} = ?`, options, correctIndex, topic };
     } else if (topic === "Diện tích") {
-      const b = randInt(4, 20);
+      const b = randInt(2, 20) * 2;
       const h = randInt(3, 15);
       const s = (b * h) / 2;
-      const pool = [s, b * h, b + h, 2 * (b + h)];
+      const pool = [s, b * h, b + h, 2 * (b + h), s + 2, s - 2];
       const { options, correctIndex } = makeOptions(s, pool);
       q = {
         question: `Tam giác đáy ${b} cm, cao ${h} cm. Diện tích = ? cm²`,
@@ -424,18 +447,23 @@ function generateGrade5() {
         topic,
       };
     } else if (topic === "Tỉ số") {
-      const a = randInt(2, 8);
-      const b = randInt(2, 8);
+      let a = randInt(2, 8);
+      let b = randInt(2, 8);
+      while (gcd(a, b) !== 1) {
+        a = randInt(2, 8);
+        b = randInt(2, 8);
+      }
       const k = randInt(2, 5);
-      const ans = `${a * k}:${b * k}`;
+      const ans = `${a}:${b}`;
+      const raw = `${a * k}:${b * k}`;
       const options = shuffle([
         ans,
-        `${a}:${b}`,
-        `${a + k}:${b + k}`,
-        `${a * b}:${k}`,
+        `${a + 1}:${b}`,
+        `${a}:${b + 1}`,
+        `${a + b}:${k}`,
       ]);
       q = {
-        question: `Rút gọn tỉ số ${a * k}:${b * k}`,
+        question: `Rút gọn tỉ số ${raw}`,
         options,
         correctIndex: options.indexOf(ans),
         topic,
