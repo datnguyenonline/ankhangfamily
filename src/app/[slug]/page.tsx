@@ -2,25 +2,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { ResourceCard } from "@/components/ResourceCard";
-import { getCategoryBySlug } from "@/lib/data";
+import { getCategoryBySlug, portalCategories } from "@/lib/data";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return [
-    { slug: "elearning" },
-    { slug: "games" },
-    { slug: "reading" },
-    { slug: "videos" },
-    { slug: "creativity" },
-  ];
+  return portalCategories.map((category) => ({ slug: category.slug }));
 }
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const category = getCategoryBySlug(slug);
+  const { t } = await getServerTranslation();
 
   if (!category) {
     notFound();
@@ -50,16 +46,18 @@ export default async function CategoryPage({ params }: Props) {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Về trang chủ
+          {t("common.backHome")}
         </Link>
 
         <div className="mb-10 flex items-start gap-4">
           <span className="text-5xl">{category.icon}</span>
           <div>
             <h1 className="font-display text-3xl font-bold text-green-50 sm:text-4xl">
-              {category.title}
+              {t(`categories.${category.id}.title`)}
             </h1>
-            <p className="mt-1 text-green-400/70">{category.subtitle}</p>
+            <p className="mt-1 text-green-400/70">
+              {t(`categories.${category.id}.subtitle`)}
+            </p>
           </div>
         </div>
 

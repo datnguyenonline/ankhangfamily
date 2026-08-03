@@ -2,9 +2,14 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { getLeaderboard } from "@/lib/scores";
 import { auth } from "@/lib/auth";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 export default async function BangXepHangPage() {
-  const [leaderboard, session] = await Promise.all([getLeaderboard(), auth()]);
+  const [leaderboard, session, { t }] = await Promise.all([
+    getLeaderboard(),
+    auth(),
+    getServerTranslation(),
+  ]);
   const currentUserId = session?.user?.id;
 
   return (
@@ -18,22 +23,20 @@ export default async function BangXepHangPage() {
           href="/on-tap-toan"
           className="mb-6 inline-flex items-center gap-1 text-sm text-green-500/70 hover:text-green-400"
         >
-          ← Về ôn tập Toán
+          {t("leaderboard.backMath")}
         </Link>
 
         <div className="mb-8">
           <h1 className="font-display text-3xl font-bold text-green-50">
-            🏆 Bảng xếp hạng
+            {t("leaderboard.title")}
           </h1>
-          <p className="mt-2 text-green-300/60">
-            Xếp hạng theo tổng điểm tích lũy — cần đăng nhập để lưu điểm
-          </p>
+          <p className="mt-2 text-green-300/60">{t("leaderboard.subtitle")}</p>
           {!currentUserId && (
             <Link
               href="/login"
               className="mt-3 inline-block text-sm text-green-500 hover:text-green-400"
             >
-              Đăng nhập để tham gia xếp hạng →
+              {t("leaderboard.loginCta")}
             </Link>
           )}
         </div>
@@ -53,7 +56,9 @@ export default async function BangXepHangPage() {
                 }`}
               >
                 <span className="flex h-10 w-10 items-center justify-center text-xl">
-                  {index < 3 ? medals[index] : (
+                  {index < 3 ? (
+                    medals[index]
+                  ) : (
                     <span className="font-display text-lg font-bold text-green-600">
                       {index + 1}
                     </span>
@@ -64,11 +69,16 @@ export default async function BangXepHangPage() {
                   <p className="font-medium text-green-50">
                     {user.name}
                     {isCurrent && (
-                      <span className="ml-2 text-xs text-green-500">(Bạn)</span>
+                      <span className="ml-2 text-xs text-green-500">
+                        {t("common.you")}
+                      </span>
                     )}
                   </p>
                   <p className="text-xs text-green-600/60">
-                    @{user.username} · {user.quizzesCompleted} bài đã làm
+                    @{user.username} ·{" "}
+                    {t("leaderboard.quizzesDone", {
+                      count: user.quizzesCompleted,
+                    })}
                   </p>
                 </div>
 
@@ -76,7 +86,7 @@ export default async function BangXepHangPage() {
                   <p className="font-display text-2xl font-bold text-green-400">
                     {user.totalScore}
                   </p>
-                  <p className="text-xs text-green-600">điểm</p>
+                  <p className="text-xs text-green-600">{t("common.points")}</p>
                 </div>
               </div>
             );
@@ -85,7 +95,7 @@ export default async function BangXepHangPage() {
 
         {leaderboard.every((u) => u.totalScore === 0) && (
           <p className="mt-6 text-center text-sm text-green-600/60">
-            Chưa có ai làm bài. Hãy bắt đầu ôn tập Toán!
+            {t("leaderboard.empty")}
           </p>
         )}
       </main>

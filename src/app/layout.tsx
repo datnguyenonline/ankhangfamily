@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import { getServerTranslation } from "@/lib/i18n/server";
 import "./globals.css";
 
 const syne = Syne({
@@ -15,21 +16,25 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "An Khang Family — Learning Portal",
-  description:
-    "Trang tổng hợp e-learning, games, reading và nhiều hơn nữa cho gia đình An Khang",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dictionary } = await getServerTranslation();
+  return {
+    title: dictionary.meta.title,
+    description: dictionary.meta.description,
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { locale } = await getServerTranslation();
+
   return (
-    <html lang="vi" className={`${syne.variable} ${jakarta.variable} h-full`}>
+    <html lang={locale} className={`${syne.variable} ${jakarta.variable} h-full`}>
       <body className="min-h-full antialiased">
-        <Providers>{children}</Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   );

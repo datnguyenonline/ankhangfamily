@@ -2,6 +2,8 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "@/lib/i18n/context";
 
 type HeaderProps = {
   transparent?: boolean;
@@ -9,6 +11,7 @@ type HeaderProps = {
 
 export function Header({ transparent = false }: HeaderProps) {
   const { data: session } = useSession();
+  const { t } = useTranslation();
 
   return (
     <header
@@ -43,11 +46,10 @@ export function Header({ transparent = false }: HeaderProps) {
 
         <nav className="hidden items-center gap-1 md:flex">
           {[
-            { href: "/on-tap-toan", label: "Ôn tập Toán" },
-            { href: "/bang-xep-hang", label: "Xếp hạng" },
-            { href: "/elearning", label: "E-Learning" },
-            { href: "/games", label: "Games" },
-            { href: "/reading", label: "Reading" },
+            { href: "/elearning", label: t("nav.elearning") },
+            { href: "/games", label: t("nav.games") },
+            { href: "/on-tap-toan", label: t("nav.math") },
+            { href: "/bang-xep-hang", label: t("nav.leaderboard") },
           ].map((link) => (
             <Link
               key={link.href}
@@ -64,6 +66,7 @@ export function Header({ transparent = false }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-3">
+          <LanguageSwitcher transparent={transparent} />
           {session?.user ? (
             <>
               <span
@@ -81,7 +84,7 @@ export function Header({ transparent = false }: HeaderProps) {
                     : "border-green-800/50 bg-green-950/50 text-green-300 hover:border-green-600/50 hover:bg-green-900/50 hover:text-green-200"
                 }`}
               >
-                Đăng xuất
+                {t("nav.logout")}
               </button>
             </>
           ) : (
@@ -89,7 +92,7 @@ export function Header({ transparent = false }: HeaderProps) {
               href="/login"
               className="rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 px-3 py-1.5 text-sm font-semibold text-black transition-all hover:from-green-500 hover:to-emerald-400"
             >
-              Đăng nhập
+              {t("nav.login")}
             </Link>
           )}
         </div>

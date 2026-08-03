@@ -32,6 +32,14 @@ const DEFAULT_SCORES: UserScore[] = [
     quizzesCompleted: 0,
     lastPlayedAt: "",
   },
+  {
+    userId: "4",
+    username: "thuydam",
+    name: "Thúy Đàm",
+    totalScore: 0,
+    quizzesCompleted: 0,
+    lastPlayedAt: "",
+  },
 ];
 
 function getRedis(): Redis | null {

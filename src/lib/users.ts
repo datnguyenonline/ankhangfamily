@@ -36,6 +36,12 @@ export const APP_USERS: AppUser[] = [
     email: "admin@ankhangfamily.com",
     passwordHash: ADMIN_PASSWORD,
   },
+  {
+    id: "4",
+    username: "thuydam",
+    name: "Thúy Đàm",
+    passwordHash: PASSWORD_123456,
+  },
 ];
 
 export async function findUserByLogin(

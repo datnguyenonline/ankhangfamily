@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Header } from "@/components/Header";
+import { gradeLabelText } from "@/lib/i18n";
+import { useTranslation } from "@/lib/i18n/context";
 import { parseGradeSlug } from "@/lib/math/routes";
-import { gradeLabel } from "@/lib/math/types";
 
 type QuizQuestion = {
   id: string;
@@ -19,6 +20,7 @@ type QuizQuestion = {
 export default function LamBaiPage() {
   const params = useParams();
   const router = useRouter();
+  const { t, locale } = useTranslation();
   const gradeSlug = params.gradeSlug as string;
   const grade = useMemo(() => parseGradeSlug(gradeSlug), [gradeSlug]);
 
@@ -35,26 +37,26 @@ export default function LamBaiPage() {
     setError("");
     try {
       const res = await fetch(`/api/math/quiz?grade=${grade}`);
-      if (!res.ok) throw new Error("Không tải được câu hỏi");
+      if (!res.ok) throw new Error(t("math.fetchError"));
       const data = await res.json();
       setQuestions(data.questions);
       setAnswers(new Array(data.questions.length).fill(-1));
       setCurrent(0);
     } catch {
-      setError("Lỗi tải câu hỏi. Vui lòng thử lại.");
+      setError(t("math.loadError"));
     } finally {
       setLoading(false);
     }
-  }, [grade]);
+  }, [grade, t]);
 
   useEffect(() => {
     if (grade === null) {
       setLoading(false);
-      setError("Lớp không hợp lệ");
+      setError(t("math.invalidGrade"));
       return;
     }
     fetchQuiz();
-  }, [grade, fetchQuiz]);
+  }, [grade, fetchQuiz, t]);
 
   function selectAnswer(optionIndex: number) {
     const next = [...answers];
@@ -65,7 +67,7 @@ export default function LamBaiPage() {
   async function handleSubmit() {
     if (grade === null) return;
     if (answers.some((a) => a === -1)) {
-      setError("Vui lòng trả lời hết tất cả câu hỏi");
+      setError(t("math.answerAll"));
       return;
     }
 
@@ -83,12 +85,12 @@ export default function LamBaiPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Nộp bài thất bại");
+      if (!res.ok) throw new Error(t("math.submitFailed"));
       const data = await res.json();
       sessionStorage.setItem("quiz-result", JSON.stringify(data));
       router.push("/on-tap-toan/ket-qua");
     } catch {
-      setError("Lỗi nộp bài. Vui lòng thử lại.");
+      setError(t("math.submitFail"));
       setSubmitting(false);
     }
   }
@@ -96,9 +98,9 @@ export default function LamBaiPage() {
   if (grade === null) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#050805]">
-        <p className="text-red-400">Lớp không hợp lệ</p>
+        <p className="text-red-400">{t("math.invalidGrade")}</p>
         <Link href="/on-tap-toan" className="rounded-lg bg-green-600 px-4 py-2 text-black">
-          Về trang ôn tập
+          {t("math.backPractice")}
         </Link>
       </div>
     );
@@ -107,7 +109,7 @@ export default function LamBaiPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#050805]">
-        <p className="text-green-400">Đang tải câu hỏi...</p>
+        <p className="text-green-400">{t("math.loadingQuestions")}</p>
       </div>
     );
   }
@@ -120,7 +122,7 @@ export default function LamBaiPage() {
           onClick={fetchQuiz}
           className="rounded-lg bg-green-600 px-4 py-2 text-black"
         >
-          Thử lại
+          {t("math.retry")}
         </button>
       </div>
     );
@@ -139,10 +141,14 @@ export default function LamBaiPage() {
             href={`/on-tap-toan/${gradeSlug}`}
             className="text-sm text-green-500/70 hover:text-green-400"
           >
-            ← Quay lại
+            {t("math.backQuiz")}
           </Link>
           <span className="text-sm text-green-400/60">
-            {gradeLabel(grade)} · {answeredCount}/{questions.length} câu
+            {gradeLabelText(locale, grade)} ·{" "}
+            {t("math.answeredProgress", {
+              answered: answeredCount,
+              total: questions.length,
+            })}
           </span>
         </div>
 
@@ -158,7 +164,10 @@ export default function LamBaiPage() {
         <div className="rounded-2xl border border-green-900/40 bg-[#0d120d] p-6 sm:p-8">
           <div className="mb-4 flex items-center justify-between">
             <span className="rounded-full bg-green-950 px-3 py-1 text-xs text-green-500">
-              Câu {current + 1}/{questions.length}
+              {t("math.questionOf", {
+                current: current + 1,
+                total: questions.length,
+              })}
             </span>
             <span className="text-xs text-green-600/60">{q.topic}</span>
           </div>
@@ -200,7 +209,7 @@ export default function LamBaiPage() {
             disabled={current === 0}
             className="rounded-lg border border-green-800/50 px-5 py-2.5 text-sm text-green-300 disabled:opacity-30"
           >
-            ← Câu trước
+            {t("math.prev")}
           </button>
 
           {current < questions.length - 1 ? (
@@ -209,7 +218,7 @@ export default function LamBaiPage() {
               disabled={answers[current] === -1}
               className="rounded-lg bg-green-800/50 px-5 py-2.5 text-sm font-medium text-green-200 disabled:opacity-30"
             >
-              Câu tiếp →
+              {t("math.nextQuestion")}
             </button>
           ) : (
             <button
@@ -217,7 +226,7 @@ export default function LamBaiPage() {
               disabled={submitting || answers.some((a) => a === -1)}
               className="rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-2.5 text-sm font-semibold text-black disabled:opacity-50"
             >
-              {submitting ? "Đang nộp..." : "Nộp bài"}
+              {submitting ? t("math.submitting") : t("math.submit")}
             </button>
           )}
         </div>
