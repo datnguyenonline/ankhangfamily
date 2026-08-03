@@ -14,6 +14,12 @@ export const vi: Dictionary = {
     login: "Đăng nhập",
     logout: "Đăng xuất",
   },
+  theme: {
+    label: "Giao diện",
+    beach: "Biển",
+    forest: "Rừng",
+    mountain: "Núi",
+  },
   common: {
     backHome: "← Về trang chủ",
     backGames: "← Về Games",
@@ -48,7 +54,9 @@ export const vi: Dictionary = {
     featuredTitle: "Ôn tập Toán — Lớp 1 đến Lớp 5",
     featuredDesc: "500 câu/lớp · 10 câu ngẫu nhiên/lần · Bảng xếp hạng",
     footer: "© {year} An Khang Family · Made with 💚",
-    beachAlt: "Bãi biển hoàng hôn với hàng dừa",
+    heroAltBeach: "Bãi biển hoàng hôn với hàng dừa",
+    heroAltForest: "Rừng xanh sâu thẳm với ánh nắng xuyên tán",
+    heroAltMountain: "Dãy núi hùng vĩ trong sương sớm",
   },
   login: {
     subtitle: "Đăng nhập để lưu điểm và tham gia bảng xếp hạng",

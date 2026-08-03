@@ -3,7 +3,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = join(__dirname, "../public/data/math");
+const OUT_DIR = join(__dirname, "../src/app/assets/data/math");
 
 function shuffle(arr) {
   const a = [...arr];

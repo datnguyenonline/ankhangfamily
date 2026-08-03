@@ -3,7 +3,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, "../public/data/math");
+const DATA_DIR = join(__dirname, "../src/app/assets/data/math");
 
 const errors = [];
 const warnings = [];

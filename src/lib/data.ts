@@ -11,13 +11,15 @@ export type PortalCategory = {
   items: PortalItem[];
 };
 
+import { routes } from "@/lib/routes";
+
 export const portalCategories: PortalCategory[] = [
   {
     id: "elearning",
     slug: "elearning",
     icon: "📚",
     color: "from-emerald-600/20 to-green-900/10",
-    items: [{ id: "on-tap-toan", url: "/on-tap-toan" }],
+    items: [{ id: "on-tap-toan", url: routes.math }],
   },
   {
     id: "games",
@@ -25,8 +27,8 @@ export const portalCategories: PortalCategory[] = [
     icon: "🎮",
     color: "from-lime-600/20 to-emerald-900/10",
     items: [
-      { id: "co-vua", url: "/games/co-vua" },
-      { id: "sudoku", url: "/games/sudoku" },
+      { id: "co-vua", url: routes.chess },
+      { id: "sudoku", url: routes.sudoku },
     ],
   },
 ];

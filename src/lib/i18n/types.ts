@@ -19,6 +19,12 @@ export type Dictionary = {
     login: string;
     logout: string;
   };
+  theme: {
+    label: string;
+    beach: string;
+    forest: string;
+    mountain: string;
+  };
   common: {
     backHome: string;
     backGames: string;
@@ -52,7 +58,9 @@ export type Dictionary = {
     featuredTitle: string;
     featuredDesc: string;
     footer: string;
-    beachAlt: string;
+    heroAltBeach: string;
+    heroAltForest: string;
+    heroAltMountain: string;
   };
   login: {
     subtitle: string;

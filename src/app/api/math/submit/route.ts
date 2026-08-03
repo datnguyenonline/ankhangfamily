@@ -1,19 +1,13 @@
 import { NextResponse } from "next/server";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { mathQuestionsPath } from "@/app/assets/paths";
 import { auth } from "@/lib/auth";
 import { validateAnswers } from "@/lib/math/questions";
 import { calculateScore, type MathQuestion } from "@/lib/math/types";
 import { addScore } from "@/lib/scores";
 
 function loadGradeQuestions(grade: number): MathQuestion[] {
-  const filePath = join(
-    process.cwd(),
-    "public",
-    "data",
-    "math",
-    `grade-${grade}.json`
-  );
+  const filePath = mathQuestionsPath(grade);
   return JSON.parse(readFileSync(filePath, "utf-8")) as MathQuestion[];
 }
 

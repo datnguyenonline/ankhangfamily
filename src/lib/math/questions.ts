@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { join } from "path";
+import { mathQuestionsPath } from "@/app/assets/paths";
 import type { MathQuestion } from "./types";
 import { assertUniqueQuizQuestions, pickRandomQuestions, QUIZ_SIZE } from "./types";
 
@@ -8,13 +8,7 @@ const cache = new Map<number, MathQuestion[]>();
 function loadGradeQuestions(grade: number): MathQuestion[] {
   if (cache.has(grade)) return cache.get(grade)!;
 
-  const filePath = join(
-    process.cwd(),
-    "public",
-    "data",
-    "math",
-    `grade-${grade}.json`
-  );
+  const filePath = mathQuestionsPath(grade);
   const raw = readFileSync(filePath, "utf-8");
   const questions = JSON.parse(raw) as MathQuestion[];
   cache.set(grade, questions);

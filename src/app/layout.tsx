@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans } from "next/font/google";
-import { Providers } from "@/components/Providers";
+import { Providers } from "@/app/components/Providers";
 import { getServerTranslation } from "@/lib/i18n/server";
+import { getTheme } from "@/lib/theme/server";
 import "./globals.css";
 
 const syne = Syne({
@@ -29,12 +30,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { locale } = await getServerTranslation();
+  const [{ locale }, theme] = await Promise.all([
+    getServerTranslation(),
+    getTheme(),
+  ]);
 
   return (
-    <html lang={locale} className={`${syne.variable} ${jakarta.variable} h-full`}>
+    <html
+      lang={locale}
+      data-theme={theme}
+      className={`${syne.variable} ${jakarta.variable} h-full`}
+    >
       <body className="min-h-full antialiased">
-        <Providers locale={locale}>{children}</Providers>
+        <Providers locale={locale} theme={theme}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -1,0 +1,15 @@
+import { gradeSlug } from "@/lib/math/routes";
+
+export const routes = {
+  home: "/",
+  login: "/login",
+  elearning: "/elearning",
+  games: "/games",
+  chess: "/games/chess",
+  sudoku: "/games/sudoku",
+  math: "/math",
+  mathResults: "/math/results",
+  leaderboard: "/leaderboard",
+  mathGrade: (grade: number) => `/math/${gradeSlug(grade)}`,
+  mathQuiz: (grade: number) => `/math/${gradeSlug(grade)}/quiz`,
+} as const;

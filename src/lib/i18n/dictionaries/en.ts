@@ -14,6 +14,12 @@ export const en: Dictionary = {
     login: "Sign in",
     logout: "Sign out",
   },
+  theme: {
+    label: "Theme",
+    beach: "Beach",
+    forest: "Forest",
+    mountain: "Mountain",
+  },
   common: {
     backHome: "← Back to home",
     backGames: "← Back to Games",
@@ -48,7 +54,9 @@ export const en: Dictionary = {
     featuredTitle: "Math Practice — Grades 1 to 5",
     featuredDesc: "500 questions/grade · 10 random/session · Leaderboard",
     footer: "© {year} An Khang Family · Made with 💚",
-    beachAlt: "Sunset beach with palm trees",
+    heroAltBeach: "Sunset beach with palm trees",
+    heroAltForest: "Deep green forest with sunbeams",
+    heroAltMountain: "Majestic mountain range in morning mist",
   },
   login: {
     subtitle: "Sign in to save scores and join the leaderboard",
