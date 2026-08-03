@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
       { source: "/math", destination: "/pages/math" },
       { source: "/games/chess", destination: "/pages/games/chess" },
       { source: "/games/sudoku", destination: "/pages/games/sudoku" },
+      { source: "/elearning/typing", destination: "/pages/elearning/typing" },
       { source: "/:slug", destination: "/pages/:slug" },
     ];
   },

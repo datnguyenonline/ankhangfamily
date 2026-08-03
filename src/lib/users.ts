@@ -31,8 +31,8 @@ export const APP_USERS: AppUser[] = [
   },
   {
     id: "3",
-    username: "admin",
-    name: "Gia đình An Khang",
+    username: "quangia",
+    name: "Quản Gia",
     email: "admin@ankhangfamily.com",
     passwordHash: ADMIN_PASSWORD,
   },
@@ -52,7 +52,8 @@ export async function findUserByLogin(
   const user = APP_USERS.find(
     (u) =>
       u.username === normalized ||
-      u.email?.toLowerCase() === normalized
+      u.email?.toLowerCase() === normalized ||
+      (normalized === "admin" && u.username === "quangia")
   );
 
   if (!user) return null;

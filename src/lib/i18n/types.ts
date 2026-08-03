@@ -30,6 +30,7 @@ export type Dictionary = {
   common: {
     backHome: string;
     backGames: string;
+    backElearning: string;
     points: string;
     level: string;
     explore: string;
@@ -141,6 +142,7 @@ export type Dictionary = {
     "math-grade-3": { title: string; description: string; tags: string[] };
     "co-vua": { title: string; description: string; tags: string[] };
     sudoku: { title: string; description: string; tags: string[] };
+    typing: { title: string; description: string; tags: string[] };
   };
   chess: {
     title: string;
@@ -170,6 +172,25 @@ export type Dictionary = {
     winTitle: string;
     clear: string;
     complete: string;
+    levels: Array<{ label: string; description: string }>;
+  };
+  typing: {
+    title: string;
+    subtitle: string;
+    familyLearning: string;
+    menuDesc: string;
+    typeThis: string;
+    placeholder: string;
+    check: string;
+    finish: string;
+    correct: string;
+    wrong: string;
+    progress: string;
+    correctSoFar: string;
+    doneTitle: string;
+    scoreSaved: string;
+    scoreFailed: string;
+    loginToSave: string;
     levels: Array<{ label: string; description: string }>;
   };
   tags: Record<string, string>;

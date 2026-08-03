@@ -25,6 +25,7 @@ export const vi: Dictionary = {
   common: {
     backHome: "← Về trang chủ",
     backGames: "← Về Games",
+    backElearning: "← Về E-Learning",
     points: "điểm",
     level: "Cấp",
     explore: "Khám phá",
@@ -159,6 +160,11 @@ export const vi: Dictionary = {
       description: "Giải Sudoku 9×9 — 10 cấp độ, tích điểm khi hoàn thành",
       tags: ["Sudoku", "10 cấp độ"],
     },
+    typing: {
+      title: "Luyện gõ chữ",
+      description: "Gõ đúng từ tiếng Việt — 10 từ/lượt, phù hợp tiểu học",
+      tags: ["Gõ chữ", "Lớp 1–3"],
+    },
   },
   chess: {
     title: "Cờ vua",
@@ -213,6 +219,31 @@ export const vi: Dictionary = {
       { label: "Cấp 8", description: "Rất khó — suy luận sâu" },
       { label: "Cấp 9", description: "Xuất sắc — thử thách thật sự" },
       { label: "Cấp 10", description: "Siêu cấp — chuyên gia" },
+    ],
+  },
+  typing: {
+    title: "Luyện gõ chữ",
+    subtitle:
+      "Chọn lớp 1–3, gõ đúng 10 từ tiếng Việt để luyện bàn phím và chính tả.",
+    familyLearning: "Học tập gia đình",
+    menuDesc:
+      "Mỗi lượt có 10 từ ngẫu nhiên. Gõ đúng được 1 điểm/từ. Phù hợp trẻ tiểu học.",
+    typeThis: "Gõ từ này",
+    placeholder: "Nhập từ...",
+    check: "Kiểm tra",
+    finish: "Hoàn thành",
+    correct: "Đúng rồi!",
+    wrong: "Chưa đúng — thử lại: {word}",
+    progress: "Từ {current}/{total}",
+    correctSoFar: "Đúng {count} từ",
+    doneTitle: "🎉 Hoàn thành lượt gõ chữ!",
+    scoreSaved: "Điểm đã lưu vào bảng xếp hạng",
+    scoreFailed: "Không lưu được điểm — thử lại sau",
+    loginToSave: "Đăng nhập để lưu điểm",
+    levels: [
+      { label: "Lớp 1", description: "Từ ngắn 2–4 chữ: mẹ, bố, nhà..." },
+      { label: "Lớp 2", description: "Từ quen thuộc: trường, học sinh..." },
+      { label: "Lớp 3", description: "Từ dài hơn: Việt Nam, môn Toán..." },
     ],
   },
   tags: {},

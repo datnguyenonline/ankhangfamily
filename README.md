@@ -22,7 +22,7 @@ Trang tổng hợp e-learning, games, reading, videos và ôn tập Toán cho gi
 |----------|----------|---------|
 | `giaan` | `123456` | Gia An |
 | `dinhkhang` | `123456` | Đinh Khang |
-| `admin` | `AnKhang2026!` | Quản trị |
+| `quangia` (hoặc `admin`) | `AnKhang2026!` | Quản Gia |
 
 ## Ôn tập Toán
 

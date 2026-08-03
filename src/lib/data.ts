@@ -22,6 +22,7 @@ export const portalCategories: PortalCategory[] = [
     items: [
       { id: "math-grade-1", url: routes.mathGrade(1) },
       { id: "math-grade-3", url: routes.mathGrade(3) },
+      { id: "typing", url: routes.typing },
     ],
   },
   {
@@ -39,6 +40,7 @@ export const portalCategories: PortalCategory[] = [
 export const ITEM_IDS = {
   "math-grade-1": true,
   "math-grade-3": true,
+  typing: true,
   "co-vua": true,
   sudoku: true,
 } as const;

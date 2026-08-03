@@ -25,6 +25,7 @@ export const en: Dictionary = {
   common: {
     backHome: "← Back to home",
     backGames: "← Back to Games",
+    backElearning: "← Back to E-Learning",
     points: "pts",
     level: "Level",
     explore: "Explore",
@@ -159,6 +160,11 @@ export const en: Dictionary = {
       description: "9×9 Sudoku — 10 levels, earn points when completed",
       tags: ["Sudoku", "10 levels"],
     },
+    typing: {
+      title: "Typing Practice",
+      description: "Type Vietnamese words correctly — 10 words per round",
+      tags: ["Typing", "Grades 1–3"],
+    },
   },
   chess: {
     title: "Chess",
@@ -212,6 +218,31 @@ export const en: Dictionary = {
       { label: "Level 8", description: "Very hard — deep logic" },
       { label: "Level 9", description: "Expert — real challenge" },
       { label: "Level 10", description: "Master — pro level" },
+    ],
+  },
+  typing: {
+    title: "Typing Practice",
+    subtitle:
+      "Pick grades 1–3 and type 10 Vietnamese words to practice keyboard and spelling.",
+    familyLearning: "Family learning",
+    menuDesc:
+      "Each round has 10 random words. 1 point per correct word. Made for elementary kids.",
+    typeThis: "Type this word",
+    placeholder: "Type here...",
+    check: "Check",
+    finish: "Finish",
+    correct: "Correct!",
+    wrong: "Not quite — try again: {word}",
+    progress: "Word {current}/{total}",
+    correctSoFar: "{count} correct so far",
+    doneTitle: "🎉 Round complete!",
+    scoreSaved: "Points saved to the leaderboard",
+    scoreFailed: "Could not save points — try again later",
+    loginToSave: "Sign in to save points",
+    levels: [
+      { label: "Grade 1", description: "Short words: mẹ, bố, nhà..." },
+      { label: "Grade 2", description: "Everyday words: trường, học sinh..." },
+      { label: "Grade 3", description: "Longer words: Việt Nam, môn Toán..." },
     ],
   },
   tags: {},

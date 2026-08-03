@@ -26,8 +26,8 @@ const DEFAULT_SCORES: UserScore[] = [
   },
   {
     userId: "3",
-    username: "admin",
-    name: "Gia đình An Khang",
+    username: "quangia",
+    name: "Quản Gia",
     totalScore: 0,
     quizzesCompleted: 0,
     lastPlayedAt: "",
