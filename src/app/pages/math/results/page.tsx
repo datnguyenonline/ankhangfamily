@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Header } from "@/app/components/Header";
+import { PageShell } from "@/app/components/ui/PageShell";
+import { Button } from "@/app/components/ui/Button";
+import { CenteredState } from "@/app/components/ui/CenteredState";
+import { cardClass } from "@/app/components/ui/buttonStyles";
 import { gradeLabelText } from "@/lib/i18n";
 import { useTranslation } from "@/lib/i18n/context";
 import { routes } from "@/lib/routes";
@@ -43,15 +46,12 @@ export default function KetQuaPage() {
 
   if (!result) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-theme-deep">
-        <p className="text-green-400/60">{t("math.noResult")}</p>
-        <Link
-          href={routes.math}
-          className="rounded-lg bg-green-600 px-4 py-2 text-black"
-        >
-          {t("math.backPractice")}
-        </Link>
-      </div>
+      <CenteredState
+        message={t("math.noResult")}
+        actionLabel={t("math.backPractice")}
+        actionHref={routes.math}
+        withHeader
+      />
     );
   }
 
@@ -60,121 +60,108 @@ export default function KetQuaPage() {
     pct >= 90 ? "🌟" : pct >= 70 ? "👏" : pct >= 50 ? "💪" : "📚";
 
   return (
-    <div className="relative min-h-screen bg-grid">
-      <Header />
+    <PageShell maxWidth="2xl" mainClassName="py-8 sm:py-10">
+      <div className={`${cardClass} p-5 text-center sm:p-8`}>
+        <span className="text-5xl">{emoji}</span>
+        <h1 className="mt-4 font-display text-2xl font-bold text-green-50 sm:text-3xl">
+          {t("math.resultTitle")}
+        </h1>
+        <p className="mt-1 text-green-400/60">
+          {gradeLabelText(locale, result.grade)} · {t("math.bookName")}
+        </p>
 
-      <main className="relative mx-auto max-w-2xl px-4 py-10 sm:px-6">
-        <div className="rounded-2xl border border-green-900/40 bg-theme-surface p-8 text-center">
-          <span className="text-5xl">{emoji}</span>
-          <h1 className="mt-4 font-display text-3xl font-bold text-green-50">
-            {t("math.resultTitle")}
-          </h1>
-          <p className="mt-1 text-green-400/60">
-            {gradeLabelText(locale, result.grade)} · {t("math.bookName")}
-          </p>
-
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="rounded-xl bg-green-950/40 p-4">
-              <p className="text-3xl font-bold text-green-400">{result.score}</p>
-              <p className="text-xs text-green-600">{t("math.scoreThisQuiz")}</p>
-            </div>
-            <div className="rounded-xl bg-green-950/40 p-4">
-              <p className="text-3xl font-bold text-green-400">
-                {result.correct}/{result.total}
-              </p>
-              <p className="text-xs text-green-600">{t("math.correctAnswers")}</p>
-            </div>
-            <div className="rounded-xl bg-green-950/40 p-4">
-              <p className="text-3xl font-bold text-green-400">{pct}%</p>
-              <p className="text-xs text-green-600">{t("math.accuracy")}</p>
-            </div>
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
+          <div className="rounded-xl bg-green-950/40 p-4">
+            <p className="text-3xl font-bold text-green-400">{result.score}</p>
+            <p className="text-xs text-green-600">{t("math.scoreThisQuiz")}</p>
           </div>
-
-          {result.scoreSaved && result.user ? (
-            <p className="mt-6 text-sm text-green-300/60">
-              {t("math.totalScore", { name: result.user.name })}{" "}
-              <span className="font-semibold text-green-400">
-                {result.user.totalScore}
-              </span>{" "}
-              (
-              {t("leaderboard.quizzesDone", {
-                count: result.user.quizzesCompleted,
-              })}
-              )
+          <div className="rounded-xl bg-green-950/40 p-4">
+            <p className="text-3xl font-bold text-green-400">
+              {result.correct}/{result.total}
             </p>
-          ) : (
-            <div className="mt-6 rounded-xl border border-green-800/30 bg-green-950/30 px-4 py-3">
-              <p className="text-sm text-green-300/70">
-                {t("math.scoreNotSaved")}{" "}
-                <Link href={routes.login} className="font-medium text-green-400 hover:underline">
-                  {t("math.loginLink")}
-                </Link>{" "}
-                {t("math.scoreNotSavedDesc")}
-              </p>
-            </div>
-          )}
+            <p className="text-xs text-green-600">{t("math.correctAnswers")}</p>
+          </div>
+          <div className="rounded-xl bg-green-950/40 p-4">
+            <p className="text-3xl font-bold text-green-400">{pct}%</p>
+            <p className="text-xs text-green-600">{t("math.accuracy")}</p>
+          </div>
         </div>
 
-        <div className="mt-8 space-y-3">
-          <h2 className="font-display text-lg font-semibold text-green-50">
-            {t("math.detailTitle")}
-          </h2>
-          {result.results.map((r, i) => (
-            <div
-              key={r.id}
-              className={`rounded-xl border p-4 ${
-                r.isCorrect
-                  ? "border-green-800/40 bg-green-950/20"
-                  : "border-red-900/40 bg-red-950/10"
-              }`}
-            >
-              <div className="flex items-start gap-2">
-                <span className="text-lg">{r.isCorrect ? "✅" : "❌"}</span>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-green-100">
-                    {t("math.questionN", { n: i + 1 })} {r.question}
+        {result.scoreSaved && result.user ? (
+          <p className="mt-6 text-sm text-green-300/60">
+            {t("math.totalScore", { name: result.user.name })}{" "}
+            <span className="font-semibold text-green-400">
+              {result.user.totalScore}
+            </span>{" "}
+            (
+            {t("leaderboard.quizzesDone", {
+              count: result.user.quizzesCompleted,
+            })}
+            )
+          </p>
+        ) : (
+          <div className="mt-6 rounded-xl border border-green-800/30 bg-green-950/30 px-4 py-3">
+            <p className="text-sm text-green-300/70">
+              {t("math.scoreNotSaved")}{" "}
+              <Link href={routes.login} className="font-medium text-green-400 hover:underline">
+                {t("math.loginLink")}
+              </Link>{" "}
+              {t("math.scoreNotSavedDesc")}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 space-y-3 sm:mt-8">
+        <h2 className="font-display text-lg font-semibold text-green-50">
+          {t("math.detailTitle")}
+        </h2>
+        {result.results.map((r, i) => (
+          <div
+            key={r.id}
+            className={`rounded-xl border p-4 ${
+              r.isCorrect
+                ? "border-green-800/40 bg-green-950/20"
+                : "border-red-900/40 bg-red-950/10"
+            }`}
+          >
+            <div className="flex items-start gap-2">
+              <span className="shrink-0 text-lg">{r.isCorrect ? "✅" : "❌"}</span>
+              <div className="min-w-0 flex-1">
+                <p className="break-words text-sm font-medium text-green-100">
+                  {t("math.questionN", { n: i + 1 })} {r.question}
+                </p>
+                <p className="mt-1 text-xs text-green-500/60">{r.topic}</p>
+                {!r.isCorrect && (
+                  <p className="mt-2 break-words text-xs text-green-400/70">
+                    {t("math.youChose")}{" "}
+                    <span className="text-red-400">
+                      {r.options[r.userAnswer]}
+                    </span>
+                    {" · "}
+                    {t("math.correctAnswer")}{" "}
+                    <span className="text-green-400">
+                      {r.options[r.correctIndex]}
+                    </span>
                   </p>
-                  <p className="mt-1 text-xs text-green-500/60">{r.topic}</p>
-                  {!r.isCorrect && (
-                    <p className="mt-2 text-xs text-green-400/70">
-                      {t("math.youChose")}{" "}
-                      <span className="text-red-400">
-                        {r.options[r.userAnswer]}
-                      </span>
-                      {" · "}
-                      {t("math.correctAnswer")}{" "}
-                      <span className="text-green-400">
-                        {r.options[r.correctIndex]}
-                      </span>
-                    </p>
-                  )}
-                </div>
+                )}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link
-            href={routes.mathQuiz(result.grade)}
-            className="rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-3 font-semibold text-black"
-          >
-            {t("math.newQuiz")}
-          </Link>
-          <Link
-            href={routes.leaderboard}
-            className="rounded-xl border border-green-800/50 px-6 py-3 text-sm text-green-300"
-          >
-            {t("math.leaderboard")}
-          </Link>
-          <Link
-            href={routes.math}
-            className="rounded-xl border border-green-800/50 px-6 py-3 text-sm text-green-300"
-          >
-            {t("math.otherGrade")}
-          </Link>
-        </div>
-      </main>
-    </div>
+      <div className="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
+        <Button href={routes.mathQuiz(result.grade)} variant="primary" size="md" className="w-full sm:w-auto">
+          {t("math.newQuiz")}
+        </Button>
+        <Button href={routes.leaderboard} variant="secondary" size="md" className="w-full sm:w-auto">
+          {t("math.leaderboard")}
+        </Button>
+        <Button href={routes.math} variant="secondary" size="md" className="w-full sm:w-auto">
+          {t("math.otherGrade")}
+        </Button>
+      </div>
+    </PageShell>
   );
 }

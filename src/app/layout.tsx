@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/app/components/Providers";
 import { getServerTranslation } from "@/lib/i18n/server";
@@ -16,6 +16,12 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const { dictionary } = await getServerTranslation();

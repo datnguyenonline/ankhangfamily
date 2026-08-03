@@ -8,6 +8,11 @@ import { getComputerMove } from "@/lib/chess/ai";
 import { pointsForLevel } from "@/lib/chess/types";
 import { useTranslation } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
+import { useBoardSize } from "@/hooks/useBoardSize";
+import { Button } from "@/app/components/ui/Button";
+import { FullscreenBottomBar } from "@/app/components/ui/FullscreenBottomBar";
+import { GameResultPanel } from "@/app/components/ui/GameResultPanel";
+import { interactiveCardClass } from "@/app/components/ui/buttonStyles";
 
 type GamePhase = "menu" | "playing" | "won" | "lost" | "draw";
 
@@ -45,21 +50,7 @@ export function ChessGame() {
   const [isThinking, setIsThinking] = useState(false);
   const [lastPoints, setLastPoints] = useState<number | null>(null);
   const [scoreSaved, setScoreSaved] = useState(false);
-  const [boardWidth, setBoardWidth] = useState(480);
-
-  const updateBoardSize = useCallback(() => {
-    const padding = isFullscreen ? 48 : 32;
-    const max = isFullscreen
-      ? Math.min(window.innerWidth - 24, window.innerHeight - 200) - padding
-      : Math.min(window.innerWidth - 32, 560);
-    setBoardWidth(Math.max(260, Math.floor(max)));
-  }, [isFullscreen]);
-
-  useEffect(() => {
-    updateBoardSize();
-    window.addEventListener("resize", updateBoardSize);
-    return () => window.removeEventListener("resize", updateBoardSize);
-  }, [updateBoardSize]);
+  const boardWidth = useBoardSize(isFullscreen, { min: 280, max: 560 });
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -238,7 +229,7 @@ export function ChessGame() {
                 key={d.level}
                 type="button"
                 onClick={() => startGame(d)}
-                className="group rounded-xl border border-green-900/40 bg-theme-surface p-4 text-left transition-all hover:border-green-600/50 hover:shadow-[0_0_30px_-10px_var(--theme-glow)]"
+                className={`${interactiveCardClass} w-full p-4 text-left`}
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-display text-lg font-bold text-green-50 group-hover:text-green-400">
@@ -263,21 +254,13 @@ export function ChessGame() {
             </p>
             <p className="mt-1 text-sm text-green-300/70">{statusText}</p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={enterFullscreen}
-              className="rounded-lg border border-green-800/50 bg-green-950/40 px-3 py-1.5 text-sm text-green-300 hover:border-green-600/50"
-            >
+          <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+            <Button variant="secondary" size="sm" onClick={enterFullscreen}>
               {t("common.fullscreen")}
-            </button>
-            <button
-              type="button"
-              onClick={resetToMenu}
-              className="rounded-lg border border-green-800/50 bg-green-950/40 px-3 py-1.5 text-sm text-green-300 hover:border-green-600/50"
-            >
+            </Button>
+            <Button variant="secondary" size="sm" onClick={resetToMenu}>
               {t("common.exitGame")}
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -300,7 +283,7 @@ export function ChessGame() {
           )}
 
           <div
-            className="overflow-hidden rounded-xl border border-green-900/50 shadow-[0_0_40px_-10px_rgba(34,197,94,0.2)]"
+            className="overflow-hidden rounded-xl border border-green-900/50 shadow-[0_0_40px_-10px_var(--theme-glow)]"
             style={{ width: boardWidth, height: boardWidth }}
           >
             <Chessboard
@@ -323,64 +306,36 @@ export function ChessGame() {
           </div>
 
           {(phase === "won" || phase === "lost" || phase === "draw") && (
-            <div className="w-full max-w-md rounded-xl border border-green-800/40 bg-theme-surface p-5 text-center">
-              <p className="font-display text-2xl font-bold text-green-50">
-                {phase === "won" && t("chess.winTitle")}
-                {phase === "lost" && t("chess.loseTitle")}
-                {phase === "draw" && t("chess.drawTitle")}
-              </p>
-              {phase === "won" && lastPoints !== null && (
-                <p className="mt-2 text-green-400">
-                  +{lastPoints} {t("common.points")}
-                </p>
-              )}
-              {phase === "won" && (
-                <p className="mt-1 text-sm text-green-300/60">
-                  {session?.user
+            <GameResultPanel
+              title={
+                phase === "won"
+                  ? t("chess.winTitle")
+                  : phase === "lost"
+                    ? t("chess.loseTitle")
+                    : t("chess.drawTitle")
+              }
+              points={phase === "won" ? lastPoints : null}
+              scoreMessage={
+                phase === "won"
+                  ? session?.user
                     ? scoreSaved
                       ? t("common.scoreSaved")
                       : t("common.savingScore")
-                    : t("common.loginToSave")}
-                </p>
-              )}
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => difficulty && startGame(difficulty)}
-                  className="rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 px-4 py-2 text-sm font-semibold text-black"
-                >
-                  {t("common.playAgain")}
-                </button>
-                <button
-                  type="button"
-                  onClick={resetToMenu}
-                  className="rounded-lg border border-green-800/50 px-4 py-2 text-sm text-green-300"
-                >
-                  {t("common.chooseOtherLevel")}
-                </button>
-              </div>
-            </div>
+                    : t("common.loginToSave")
+                  : ""
+              }
+              onPlayAgain={() => difficulty && startGame(difficulty)}
+              onChooseLevel={resetToMenu}
+            />
           )}
         </div>
       )}
 
       {isFullscreen && (
-        <div className="fixed inset-x-0 bottom-0 z-50 flex flex-wrap items-center justify-center gap-2 border-t border-green-900/50 bg-theme-deep/95 px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl sm:gap-3 sm:px-4">
-          <button
-            type="button"
-            onClick={exitFullscreen}
-            className="rounded-lg border border-green-700/50 bg-green-950/60 px-4 py-2.5 text-sm font-medium text-green-200 hover:border-green-500/50"
-          >
-            {t("common.exitFullscreen")}
-          </button>
-          <button
-            type="button"
-            onClick={resetToMenu}
-            className="rounded-lg border border-red-900/50 bg-red-950/40 px-4 py-2.5 text-sm font-medium text-red-300 hover:border-red-600/50"
-          >
-            {t("common.exitGame")}
-          </button>
-        </div>
+        <FullscreenBottomBar
+          onExitFullscreen={exitFullscreen}
+          onExitGame={resetToMenu}
+        />
       )}
     </div>
   );

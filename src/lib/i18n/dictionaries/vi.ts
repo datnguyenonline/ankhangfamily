@@ -13,6 +13,8 @@ export const vi: Dictionary = {
     leaderboard: "Xếp hạng",
     login: "Đăng nhập",
     logout: "Đăng xuất",
+    menu: "Mở menu",
+    closeMenu: "Đóng menu",
   },
   theme: {
     label: "Giao diện",

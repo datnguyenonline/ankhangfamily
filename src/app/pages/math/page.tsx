@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { Header } from "@/app/components/Header";
+import { PageShell } from "@/app/components/ui/PageShell";
+import { BackLink } from "@/app/components/ui/BackLink";
+import { PageHeader } from "@/app/components/ui/PageHeader";
+import { Button } from "@/app/components/ui/Button";
+import { interactiveCardClass } from "@/app/components/ui/buttonStyles";
 import { routes } from "@/lib/routes";
 import { getQuestionCount } from "@/lib/math/questions";
 import { GRADES } from "@/lib/math/types";
@@ -10,61 +14,43 @@ export default async function OnTapToanPage() {
   const { t, locale } = await getServerTranslation();
 
   return (
-    <div className="relative min-h-screen bg-grid">
-      <div className="glow-orb -left-32 top-0 h-96 w-96 bg-green-600/10" />
+    <PageShell glow="left">
+      <BackLink href={routes.home}>{t("common.backHome")}</BackLink>
 
-      <Header />
+      <PageHeader
+        eyebrow={t("math.bookName")}
+        title={t("math.title")}
+        description={t("math.desc")}
+      />
 
-      <main className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6">
-        <Link
-          href={routes.home}
-          className="mb-6 inline-flex items-center gap-1 text-sm text-green-500/70 hover:text-green-400"
-        >
-          {t("common.backHome")}
-        </Link>
-
-        <div className="mb-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-green-500">
-            {t("math.bookName")}
-          </p>
-          <h1 className="font-display text-3xl font-bold text-green-50 sm:text-4xl">
-            {t("math.title")}
-          </h1>
-          <p className="mt-3 max-w-xl text-green-300/60">{t("math.desc")}</p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {GRADES.map((grade) => (
-            <Link
-              key={grade}
-              href={routes.mathGrade(grade)}
-              className="group rounded-2xl border border-green-900/40 bg-theme-surface p-6 transition-all hover:border-green-600/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.25)]"
-            >
-              <span className="text-3xl">🔢</span>
-              <h2 className="mt-3 font-display text-2xl font-bold text-green-50 group-hover:text-green-400">
-                {gradeLabelText(locale, grade)}
-              </h2>
-              <p className="mt-1 text-sm text-green-400/60">
-                {t("math.questionsPerGrade", {
-                  count: getQuestionCount(grade),
-                })}
-              </p>
-              <p className="mt-4 text-sm font-medium text-green-500 opacity-0 transition-opacity group-hover:opacity-100">
-                {t("math.startPractice")}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mt-10 flex flex-wrap gap-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {GRADES.map((grade) => (
           <Link
-            href={routes.leaderboard}
-            className="rounded-xl border border-green-800/50 bg-green-950/30 px-6 py-3 text-sm font-medium text-green-300 transition-colors hover:border-green-600/50 hover:text-green-200"
+            key={grade}
+            href={routes.mathGrade(grade)}
+            className={interactiveCardClass}
           >
-            {t("math.leaderboard")}
+            <span className="text-3xl">🔢</span>
+            <h2 className="mt-3 font-display text-xl font-bold text-green-50 group-hover:text-green-400 sm:text-2xl">
+              {gradeLabelText(locale, grade)}
+            </h2>
+            <p className="mt-1 text-sm text-green-400/60">
+              {t("math.questionsPerGrade", {
+                count: getQuestionCount(grade),
+              })}
+            </p>
+            <p className="mt-3 text-sm font-medium text-green-500">
+              {t("math.startPractice")} →
+            </p>
           </Link>
-        </div>
-      </main>
-    </div>
+        ))}
+      </div>
+
+      <div className="mt-8 flex flex-wrap gap-3 sm:mt-10">
+        <Button href={routes.leaderboard} variant="secondary" size="md">
+          {t("math.leaderboard")}
+        </Button>
+      </div>
+    </PageShell>
   );
 }

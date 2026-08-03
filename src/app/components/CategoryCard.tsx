@@ -3,17 +3,15 @@
 import Link from "next/link";
 import type { PortalCategory } from "@/lib/data";
 import { useTranslation } from "@/lib/i18n/context";
+import { interactiveCardClass } from "@/app/components/ui/buttonStyles";
 
 export function CategoryCard({ category }: { category: PortalCategory }) {
   const { t } = useTranslation();
 
   return (
-    <Link
-      href={`/${category.slug}`}
-      className="group relative overflow-hidden rounded-2xl border border-green-900/40 bg-theme-surface p-6 transition-all duration-300 hover:border-green-600/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.3)]"
-    >
+    <Link href={`/${category.slug}`} className={interactiveCardClass}>
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+        className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-20 transition-opacity duration-300 group-hover:opacity-40`}
       />
       <div className="relative">
         <span className="text-4xl">{category.icon}</span>
@@ -26,13 +24,14 @@ export function CategoryCard({ category }: { category: PortalCategory }) {
         <p className="mt-4 text-xs text-green-500/50">
           {category.items.length} {t("common.products")} · {t("common.tapToView")}
         </p>
-        <div className="mt-4 flex items-center gap-1 text-sm font-medium text-green-400 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="mt-3 flex items-center gap-1 text-sm font-medium text-green-400">
           {t("common.explore")}
           <svg
             className="h-4 w-4 transition-transform group-hover:translate-x-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden
           >
             <path
               strokeLinecap="round"

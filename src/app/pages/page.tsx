@@ -51,7 +51,7 @@ export default async function HomePage() {
                 {t("home.family")}
               </p>
 
-              <h1 className="font-display text-3xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
+              <h1 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow-lg sm:text-5xl md:text-6xl">
                 {t("home.heroTitle1")}
                 <br />
                 <span
@@ -68,13 +68,13 @@ export default async function HomePage() {
               <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
                 <Link
                   href={routes.math}
-                  className="rounded-full bg-gradient-to-r from-green-500 to-emerald-400 px-8 py-3.5 text-sm font-bold text-black shadow-lg shadow-green-900/40 transition-transform hover:scale-105"
+                  className="rounded-full bg-gradient-to-r from-green-500 to-emerald-400 px-6 py-3.5 text-sm font-bold text-black shadow-lg shadow-green-900/40 transition-transform active:scale-95 sm:px-8"
                 >
                   {t("home.ctaMath")}
                 </Link>
                 <Link
                   href={routes.chess}
-                  className="rounded-full border border-white/30 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+                  className="rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30 sm:px-8"
                 >
                   {t("home.ctaChess")}
                 </Link>

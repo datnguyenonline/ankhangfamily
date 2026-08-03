@@ -136,6 +136,26 @@ body {
   color: var(--theme-green-50);
   font-family: var(--font-jakarta), system-ui, sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+.safe-top {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@media (hover: none) {
+  .hover-only {
+    opacity: 1 !important;
+  }
 }
 
 .font-display {

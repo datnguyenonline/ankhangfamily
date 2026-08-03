@@ -1,9 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Header } from "@/app/components/Header";
+import { PageShell } from "@/app/components/ui/PageShell";
+import { BackLink } from "@/app/components/ui/BackLink";
+import { Button } from "@/app/components/ui/Button";
+import { CenteredState } from "@/app/components/ui/CenteredState";
+import { cardClass } from "@/app/components/ui/buttonStyles";
 import { routes } from "@/lib/routes";
 import { gradeLabelText } from "@/lib/i18n";
 import { useTranslation } from "@/lib/i18n/context";
@@ -98,34 +101,30 @@ export default function LamBaiPage() {
 
   if (grade === null) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-theme-deep">
-        <p className="text-red-400">{t("math.invalidGrade")}</p>
-        <Link href={routes.math} className="rounded-lg bg-green-600 px-4 py-2 text-black">
-          {t("math.backPractice")}
-        </Link>
-      </div>
+      <CenteredState
+        tone="error"
+        message={t("math.invalidGrade")}
+        actionLabel={t("math.backPractice")}
+        actionHref={routes.math}
+      />
     );
   }
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-theme-deep">
-        <p className="text-green-400">{t("math.loadingQuestions")}</p>
-      </div>
+      <CenteredState message={t("math.loadingQuestions")} withHeader />
     );
   }
 
   if (error && questions.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-theme-deep">
-        <p className="text-red-400">{error}</p>
-        <button
-          onClick={fetchQuiz}
-          className="rounded-lg bg-green-600 px-4 py-2 text-black"
-        >
-          {t("math.retry")}
-        </button>
-      </div>
+      <CenteredState
+        tone="error"
+        message={error}
+        actionLabel={t("math.retry")}
+        onAction={fetchQuiz}
+        withHeader
+      />
     );
   }
 
@@ -133,123 +132,124 @@ export default function LamBaiPage() {
   const answeredCount = answers.filter((a) => a !== -1).length;
 
   return (
-    <div className="relative min-h-screen bg-grid">
-      <Header />
+    <PageShell maxWidth="2xl" mainClassName="py-6 sm:py-8">
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <BackLink href={routes.mathGrade(grade)} className="mb-0">
+          {t("math.backQuiz")}
+        </BackLink>
+        <span className="text-sm text-green-400/60">
+          {gradeLabelText(locale, grade)} ·{" "}
+          {t("math.answeredProgress", {
+            answered: answeredCount,
+            total: questions.length,
+          })}
+        </span>
+      </div>
 
-      <main className="relative mx-auto max-w-2xl px-4 py-8 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <Link
-            href={routes.mathGrade(grade!)}
-            className="text-sm text-green-500/70 hover:text-green-400"
-          >
-            {t("math.backQuiz")}
-          </Link>
-          <span className="text-sm text-green-400/60">
-            {gradeLabelText(locale, grade)} ·{" "}
-            {t("math.answeredProgress", {
-              answered: answeredCount,
+      <div className="mb-4 h-2 overflow-hidden rounded-full bg-green-950">
+        <div
+          className="h-full bg-gradient-to-r from-green-600 to-emerald-400 transition-all"
+          style={{
+            width: `${((current + 1) / questions.length) * 100}%`,
+          }}
+        />
+      </div>
+
+      <div className={`${cardClass} p-5 sm:p-8`}>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <span className="rounded-full bg-green-950 px-3 py-1 text-xs text-green-500">
+            {t("math.questionOf", {
+              current: current + 1,
               total: questions.length,
             })}
           </span>
+          <span className="text-xs text-green-600/60">{q.topic}</span>
         </div>
 
-        <div className="mb-4 h-2 overflow-hidden rounded-full bg-green-950">
-          <div
-            className="h-full bg-gradient-to-r from-green-600 to-emerald-400 transition-all"
-            style={{
-              width: `${((current + 1) / questions.length) * 100}%`,
-            }}
-          />
+        <h2 className="break-words font-display text-lg font-semibold leading-relaxed text-green-50 sm:text-xl md:text-2xl">
+          {q.question}
+        </h2>
+
+        <div className="mt-6 space-y-3">
+          {q.options.map((option, idx) => {
+            const selected = answers[current] === idx;
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => selectAnswer(idx)}
+                className={`w-full rounded-xl border px-4 py-3.5 text-left text-sm transition-all touch-manipulation sm:text-base ${
+                  selected
+                    ? "border-green-500 bg-green-950/60 text-green-200 ring-2 ring-green-500/30"
+                    : "border-green-900/40 bg-theme-deep text-green-300/80 hover:border-green-700/50 hover:bg-green-950/30 active:bg-green-950/40"
+                }`}
+              >
+                <span className="mr-2 font-medium text-green-500">
+                  {String.fromCharCode(65 + idx)}.
+                </span>
+                {option}
+              </button>
+            );
+          })}
         </div>
+      </div>
 
-        <div className="rounded-2xl border border-green-900/40 bg-theme-surface p-6 sm:p-8">
-          <div className="mb-4 flex items-center justify-between">
-            <span className="rounded-full bg-green-950 px-3 py-1 text-xs text-green-500">
-              {t("math.questionOf", {
-                current: current + 1,
-                total: questions.length,
-              })}
-            </span>
-            <span className="text-xs text-green-600/60">{q.topic}</span>
-          </div>
+      {error && (
+        <p className="mt-4 text-center text-sm text-red-400">{error}</p>
+      )}
 
-          <h2 className="font-display text-xl font-semibold leading-relaxed text-green-50 sm:text-2xl">
-            {q.question}
-          </h2>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button
+          variant="ghost"
+          size="md"
+          className="w-full sm:w-auto"
+          onClick={() => setCurrent((c) => Math.max(0, c - 1))}
+          disabled={current === 0}
+        >
+          {t("math.prev")}
+        </Button>
 
-          <div className="mt-6 space-y-3">
-            {q.options.map((option, idx) => {
-              const selected = answers[current] === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => selectAnswer(idx)}
-                  className={`w-full rounded-xl border px-4 py-3.5 text-left text-sm transition-all sm:text-base ${
-                    selected
-                      ? "border-green-500 bg-green-950/60 text-green-200 ring-2 ring-green-500/30"
-                      : "border-green-900/40 bg-theme-deep text-green-300/80 hover:border-green-700/50 hover:bg-green-950/30"
-                  }`}
-                >
-                  <span className="mr-2 font-medium text-green-500">
-                    {String.fromCharCode(65 + idx)}.
-                  </span>
-                  {option}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {error && (
-          <p className="mt-4 text-center text-sm text-red-400">{error}</p>
-        )}
-
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <button
-            onClick={() => setCurrent((c) => Math.max(0, c - 1))}
-            disabled={current === 0}
-            className="w-full rounded-lg border border-green-800/50 px-5 py-2.5 text-sm text-green-300 disabled:opacity-30 sm:w-auto"
+        {current < questions.length - 1 ? (
+          <Button
+            variant="secondary"
+            size="md"
+            className="w-full sm:w-auto"
+            onClick={() => setCurrent((c) => c + 1)}
+            disabled={answers[current] === -1}
           >
-            {t("math.prev")}
+            {t("math.nextQuestion")}
+          </Button>
+        ) : (
+          <Button
+            variant="primary"
+            size="md"
+            className="w-full sm:w-auto"
+            onClick={handleSubmit}
+            disabled={submitting || answers.some((a) => a === -1)}
+          >
+            {submitting ? t("math.submitting") : t("math.submit")}
+          </Button>
+        )}
+      </div>
+
+      <div className="mt-6 flex flex-wrap justify-center gap-2">
+        {questions.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => setCurrent(idx)}
+            className={`flex h-11 w-11 items-center justify-center rounded-lg text-xs font-medium transition-colors touch-manipulation ${
+              idx === current
+                ? "bg-green-600 text-black"
+                : answers[idx] !== -1
+                  ? "bg-green-900/60 text-green-300"
+                  : "bg-green-950/40 text-green-600"
+            }`}
+          >
+            {idx + 1}
           </button>
-
-          {current < questions.length - 1 ? (
-            <button
-              onClick={() => setCurrent((c) => c + 1)}
-              disabled={answers[current] === -1}
-              className="w-full rounded-lg bg-green-800/50 px-5 py-2.5 text-sm font-medium text-green-200 disabled:opacity-30 sm:w-auto"
-            >
-              {t("math.nextQuestion")}
-            </button>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              disabled={submitting || answers.some((a) => a === -1)}
-              className="w-full rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-2.5 text-sm font-semibold text-black disabled:opacity-50 sm:w-auto"
-            >
-              {submitting ? t("math.submitting") : t("math.submit")}
-            </button>
-          )}
-        </div>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {questions.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrent(idx)}
-              className={`h-8 w-8 rounded-lg text-xs font-medium transition-colors ${
-                idx === current
-                  ? "bg-green-600 text-black"
-                  : answers[idx] !== -1
-                    ? "bg-green-900/60 text-green-300"
-                    : "bg-green-950/40 text-green-600"
-              }`}
-            >
-              {idx + 1}
-            </button>
-          ))}
-        </div>
-      </main>
-    </div>
+        ))}
+      </div>
+    </PageShell>
   );
 }

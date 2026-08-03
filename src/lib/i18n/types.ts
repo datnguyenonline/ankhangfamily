@@ -18,6 +18,8 @@ export type Dictionary = {
     leaderboard: string;
     login: string;
     logout: string;
+    menu: string;
+    closeMenu: string;
   };
   theme: {
     label: string;

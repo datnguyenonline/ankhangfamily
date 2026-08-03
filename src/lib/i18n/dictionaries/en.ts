@@ -13,6 +13,8 @@ export const en: Dictionary = {
     leaderboard: "Leaderboard",
     login: "Sign in",
     logout: "Sign out",
+    menu: "Open menu",
+    closeMenu: "Close menu",
   },
   theme: {
     label: "Theme",

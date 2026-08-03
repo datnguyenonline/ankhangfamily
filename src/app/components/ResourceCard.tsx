@@ -14,7 +14,7 @@ export function ResourceCard({ item }: { item: PortalItem }) {
   return (
     <Link
       href={item.url}
-      className="group flex flex-col rounded-xl border border-green-900/30 bg-theme-surface p-5 transition-all hover:border-green-600/40 hover:bg-theme-elevated hover:shadow-[0_0_30px_-10px_rgba(34,197,94,0.2)]"
+      className="group flex flex-col rounded-xl border border-green-900/30 bg-theme-surface p-5 transition-all hover:border-green-600/40 hover:bg-theme-elevated hover:shadow-[0_0_30px_-10px_var(--theme-glow)] active:scale-[0.99]"
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-display text-lg font-semibold text-green-50 group-hover:text-green-400">

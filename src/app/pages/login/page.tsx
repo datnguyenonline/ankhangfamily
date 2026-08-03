@@ -44,7 +44,7 @@ function LoginForm() {
     <div className="relative flex min-h-screen items-center justify-center bg-grid px-4">
       <div className="glow-orb left-1/2 top-1/4 h-96 w-96 -translate-x-1/2 bg-green-600/10" />
 
-      <div className="absolute right-4 top-4 flex items-center gap-2">
+      <div className="safe-top absolute right-3 top-0 flex items-center gap-2 sm:right-4">
         <ThemeSwitcher />
         <LanguageSwitcher />
       </div>
@@ -62,7 +62,7 @@ function LoginForm() {
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-green-900/40 bg-theme-surface/90 p-8 shadow-2xl shadow-black/40 backdrop-blur-sm"
+          className="rounded-2xl border border-green-900/40 bg-theme-surface/90 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-8"
         >
           <div className="space-y-5">
             <div>
