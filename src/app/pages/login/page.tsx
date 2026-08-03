@@ -51,9 +51,13 @@ function LoginForm() {
 
       <div className="relative w-full max-w-md">
         <div className="mb-8 text-center">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-700 text-xl font-bold text-black shadow-lg shadow-green-500/30">
+          <Link
+            href={routes.home}
+            className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-700 text-xl font-bold text-black shadow-lg shadow-green-500/30 transition-transform hover:scale-105 active:scale-95"
+            aria-label={t("common.backHome")}
+          >
             AK
-          </span>
+          </Link>
           <h1 className="mt-6 font-display text-3xl font-bold text-green-50">
             An Khang Family
           </h1>

@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { saveUserSettings } from "@/lib/settings/client";
 import {
   createTranslator,
   getDictionary,
@@ -23,12 +25,12 @@ type LanguageContextValue = {
   locale: Locale;
   dictionary: Dictionary;
   t: Translator;
-  setLocale: (locale: Locale) => void;
+  setLocale: (locale: Locale, options?: { persist?: boolean }) => void;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-function readLocaleCookie(): Locale {
+export function readLocaleCookie(): Locale {
   if (typeof document === "undefined") return DEFAULT_LOCALE;
   const match = document.cookie
     .split("; ")
@@ -49,6 +51,8 @@ export function LanguageProvider({
   initialLocale?: Locale;
 }) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   useEffect(() => {
@@ -56,12 +60,16 @@ export function LanguageProvider({
   }, []);
 
   const setLocale = useCallback(
-    (next: Locale) => {
+    (next: Locale, options?: { persist?: boolean }) => {
       writeLocaleCookie(next);
       setLocaleState(next);
       router.refresh();
+
+      if (options?.persist !== false && userId) {
+        void saveUserSettings({ locale: next });
+      }
     },
-    [router]
+    [router, userId]
   );
 
   const dictionary = useMemo(() => getDictionary(locale), [locale]);

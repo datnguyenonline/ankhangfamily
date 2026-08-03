@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { useSession } from "next-auth/react";
+import { saveUserSettings } from "@/lib/settings/client";
 import { isAvatarId } from "./avatars";
 import {
   AVATAR_COOKIE,
@@ -18,14 +19,14 @@ import {
 
 type AvatarContextValue = {
   avatarId: AvatarId | null;
-  setAvatarId: (id: AvatarId) => void;
+  setAvatarId: (id: AvatarId, options?: { persist?: boolean }) => void;
   clearAvatar: () => void;
   storageKey: string;
 };
 
 const AvatarContext = createContext<AvatarContextValue | null>(null);
 
-function readPrefs(): AvatarPrefs {
+export function readAvatarPrefs(): AvatarPrefs {
   if (typeof document === "undefined") return {};
 
   const match = document.cookie
@@ -58,29 +59,38 @@ function writePrefs(prefs: AvatarPrefs) {
 export function AvatarProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const storageKey = session?.user?.id ?? "guest";
+  const userId = session?.user?.id;
   const [avatarId, setAvatarIdState] = useState<AvatarId | null>(null);
 
   useEffect(() => {
-    const prefs = readPrefs();
+    const prefs = readAvatarPrefs();
     setAvatarIdState(prefs[storageKey] ?? null);
   }, [storageKey]);
 
   const setAvatarId = useCallback(
-    (id: AvatarId) => {
-      const prefs = readPrefs();
+    (id: AvatarId, options?: { persist?: boolean }) => {
+      const prefs = readAvatarPrefs();
       prefs[storageKey] = id;
       writePrefs(prefs);
       setAvatarIdState(id);
+
+      if (options?.persist !== false && userId) {
+        void saveUserSettings({ avatarId: id });
+      }
     },
-    [storageKey]
+    [storageKey, userId]
   );
 
   const clearAvatar = useCallback(() => {
-    const prefs = readPrefs();
+    const prefs = readAvatarPrefs();
     delete prefs[storageKey];
     writePrefs(prefs);
     setAvatarIdState(null);
-  }, [storageKey]);
+
+    if (userId) {
+      void saveUserSettings({ avatarId: null });
+    }
+  }, [storageKey, userId]);
 
   const value = useMemo(
     () => ({ avatarId, setAvatarId, clearAvatar, storageKey }),

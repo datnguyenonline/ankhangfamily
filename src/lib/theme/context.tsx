@@ -8,6 +8,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useSession } from "next-auth/react";
+import { saveUserSettings } from "@/lib/settings/client";
 import { getThemeConfig } from "./themes";
 import {
   DEFAULT_THEME,
@@ -19,12 +21,12 @@ import {
 type ThemeContextValue = {
   theme: ThemeId;
   themeConfig: ThemeConfig;
-  setTheme: (theme: ThemeId) => void;
+  setTheme: (theme: ThemeId, options?: { persist?: boolean }) => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function readThemeCookie(): ThemeId {
+export function readThemeCookie(): ThemeId {
   if (typeof document === "undefined") return DEFAULT_THEME;
   const match = document.cookie
     .split("; ")
@@ -51,6 +53,8 @@ export function ThemeProvider({
   children: React.ReactNode;
   initialTheme?: ThemeId;
 }) {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const [theme, setThemeState] = useState<ThemeId>(initialTheme);
 
   useEffect(() => {
@@ -59,11 +63,18 @@ export function ThemeProvider({
     applyTheme(saved);
   }, []);
 
-  const setTheme = useCallback((next: ThemeId) => {
-    writeThemeCookie(next);
-    setThemeState(next);
-    applyTheme(next);
-  }, []);
+  const setTheme = useCallback(
+    (next: ThemeId, options?: { persist?: boolean }) => {
+      writeThemeCookie(next);
+      setThemeState(next);
+      applyTheme(next);
+
+      if (options?.persist !== false && userId) {
+        void saveUserSettings({ theme: next });
+      }
+    },
+    [userId]
+  );
 
   const themeConfig = useMemo(() => getThemeConfig(theme), [theme]);
 

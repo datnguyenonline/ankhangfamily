@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AvatarDisplay } from "@/app/components/AvatarDisplay";
@@ -60,7 +61,7 @@ function SignInForm({ onSuccess }: { onSuccess: () => void }) {
   }
 
   return (
-    <form onSubmit={handleLogin} className="space-y-4">
+    <form onSubmit={handleLogin} className="space-y-5">
       <input
         type="text"
         value={username}
@@ -68,7 +69,7 @@ function SignInForm({ onSuccess }: { onSuccess: () => void }) {
         required
         autoComplete="username"
         placeholder={t("login.usernamePlaceholder")}
-        className="w-full rounded-lg border border-green-900/50 bg-theme-deep px-4 py-3 text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
+        className="min-h-14 w-full rounded-xl border border-green-900/50 bg-theme-deep px-4 text-base text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
       />
       <input
         type="password"
@@ -77,19 +78,22 @@ function SignInForm({ onSuccess }: { onSuccess: () => void }) {
         required
         autoComplete="current-password"
         placeholder="••••••"
-        className="w-full rounded-lg border border-green-900/50 bg-theme-deep px-4 py-3 text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
+        className="min-h-14 w-full rounded-xl border border-green-900/50 bg-theme-deep px-4 text-base text-green-50 placeholder:text-green-800 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/30"
       />
       {error && (
-        <p className="rounded-lg bg-red-950/50 px-4 py-3 text-sm text-red-400">
+        <p className="rounded-xl bg-red-950/50 px-4 py-3 text-sm text-red-400">
           {error}
         </p>
       )}
-      <Button type="submit" variant="primary" size="md" className="w-full" disabled={loading}>
+      <Button type="submit" variant="primary" size="lg" className="w-full" disabled={loading}>
         {loading ? t("login.submitting") : t("nav.login")}
       </Button>
-      <Button href={routes.login} variant="ghost" size="md" className="w-full">
+      <Link
+        href={routes.login}
+        className="block text-center text-sm text-green-500 hover:text-green-400"
+      >
         {t("settings.fullLoginPage")}
-      </Button>
+      </Link>
     </form>
   );
 }
@@ -221,6 +225,7 @@ export function ProfilePanel({ onClose, embedded = false }: ProfilePanelProps) {
         title={t("nav.login")}
         open={showSignIn}
         onBack={() => setShowSignIn(false)}
+        size="lg"
       >
         <SignInForm onSuccess={() => setShowSignIn(false)} />
       </SettingsDetailModal>

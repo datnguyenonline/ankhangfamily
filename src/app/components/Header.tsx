@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AvatarTrigger } from "@/app/components/AvatarTrigger";
 import { useTranslation } from "@/lib/i18n/context";
+import { useSettingsPopup } from "@/lib/settings/popup-context";
 import { routes } from "@/lib/routes";
 
 type HeaderProps = {
@@ -18,8 +19,14 @@ const navLinks = (t: (key: string) => string) => [
 
 export function Header({ transparent = false }: HeaderProps) {
   const { t } = useTranslation();
+  const { setOpen: closeSettings } = useSettingsPopup();
   const [menuOpen, setMenuOpen] = useState(false);
   const links = navLinks(t);
+
+  function goHome() {
+    closeSettings(false);
+    setMenuOpen(false);
+  }
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -51,9 +58,10 @@ export function Header({ transparent = false }: HeaderProps) {
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-3 sm:h-16 sm:gap-3 sm:px-6">
           <Link
             href={routes.home}
+            onClick={goHome}
             className="group flex min-h-11 min-w-0 items-center gap-2 sm:gap-3"
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-700 text-xs font-bold text-black shadow-lg shadow-green-500/20 sm:text-sm">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-700 text-xs font-bold text-black shadow-lg shadow-green-500/20 transition-transform group-hover:scale-105 group-active:scale-95 sm:text-sm">
               AK
             </span>
             <div className="min-w-0">
