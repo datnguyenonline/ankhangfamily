@@ -1,6 +1,6 @@
 import type { ThemeConfig, ThemeId } from "./types";
 
-import beachHero from "@/app/assets/images/beach-hero.png";
+import beachHero from "@/app/assets/images/beach-hero.jpg";
 
 export const themeConfigs: Record<ThemeId, ThemeConfig> = {
   beach: {

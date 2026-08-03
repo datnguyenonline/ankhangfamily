@@ -129,6 +129,8 @@
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: var(--theme-bg-deep);
 }
 
 body {

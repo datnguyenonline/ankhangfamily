@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import beachHero from "@/app/assets/images/beach-hero.png";
+import beachHero from "@/app/assets/images/beach-hero.jpg";
 import { Header } from "@/app/components/Header";
 import { ResourceCard } from "@/app/components/ResourceCard";
 import { elearningCategory, gamesCategory } from "@/lib/data";
@@ -8,7 +8,7 @@ import { routes } from "@/lib/routes";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { getTheme } from "@/lib/theme/server";
 import { getThemeConfig } from "@/lib/theme/themes";
-import type { ThemeId } from "@/lib/theme";
+import { THEME_BG, type ThemeId } from "@/lib/theme";
 
 const heroAltKeys: Record<ThemeId, "home.heroAltBeach" | "home.heroAltForest" | "home.heroAltMountain"> = {
   beach: "home.heroAltBeach",
@@ -24,13 +24,17 @@ export default async function HomePage() {
   return (
     <>
       <section className="relative min-h-screen">
-        <div className="fixed inset-0 -z-10">
+        <div
+          className="fixed inset-0 -z-10"
+          style={{ backgroundColor: THEME_BG[theme] }}
+        >
           {themeConfig.hero.type === "image" ? (
             <Image
               src={beachHero}
               alt={t(heroAltKeys[theme])}
               fill
               priority
+              quality={80}
               className="object-cover object-center"
               sizes="100vw"
             />

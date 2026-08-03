@@ -203,7 +203,7 @@ export function CodingGame() {
 
   if (!activeLevel || !robot) return null;
 
-  const cellSize = Math.min(56, Math.floor(280 / activeLevel.size));
+  const cellSize = Math.min(56, Math.floor(336 / activeLevel.size));
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-4">
