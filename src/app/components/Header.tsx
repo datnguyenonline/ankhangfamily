@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
-import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
-import { Button } from "@/app/components/ui/Button";
+import { AvatarTrigger } from "@/app/components/AvatarTrigger";
 import { useTranslation } from "@/lib/i18n/context";
 import { routes } from "@/lib/routes";
 
@@ -20,7 +17,6 @@ const navLinks = (t: (key: string) => string) => [
 ];
 
 export function Header({ transparent = false }: HeaderProps) {
-  const { data: session } = useSession();
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const links = navLinks(t);
@@ -87,36 +83,9 @@ export function Header({ transparent = false }: HeaderProps) {
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-            <ThemeSwitcher transparent={transparent} />
-            <LanguageSwitcher transparent={transparent} />
-            {session?.user ? (
-              <>
-                <span
-                  className={`hidden max-w-[8rem] truncate text-sm lg:block ${
-                    transparent ? "text-white/70" : "text-green-300/60"
-                  }`}
-                >
-                  {session.user.name}
-                </span>
-                <button
-                  onClick={() => signOut({ callbackUrl: routes.home })}
-                  className={`hidden min-h-10 rounded-lg border px-3 py-2 text-xs transition-all sm:block sm:text-sm ${
-                    transparent
-                      ? "border-white/20 bg-white/10 text-white hover:bg-white/20"
-                      : "border-green-800/50 bg-green-950/50 text-green-300 hover:border-green-600/50 hover:bg-green-900/50 hover:text-green-200"
-                  }`}
-                >
-                  {t("nav.logout")}
-                </button>
-              </>
-            ) : (
-              <Link
-                href={routes.login}
-                className="hidden min-h-10 items-center rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 px-3 py-2 text-xs font-semibold text-black transition-all hover:from-green-500 hover:to-emerald-400 sm:inline-flex sm:text-sm"
-              >
-                {t("nav.login")}
-              </Link>
-            )}
+            <div className="hidden md:block">
+              <AvatarTrigger transparent={transparent} />
+            </div>
 
             <button
               type="button"
@@ -160,31 +129,6 @@ export function Header({ transparent = false }: HeaderProps) {
                 </Link>
               ))}
             </nav>
-            <div className="mt-3 border-t border-green-900/30 pt-3">
-              {session?.user ? (
-                <Button
-                  variant="secondary"
-                  size="md"
-                  className="w-full"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    signOut({ callbackUrl: routes.home });
-                  }}
-                >
-                  {t("nav.logout")} ({session.user.name})
-                </Button>
-              ) : (
-                <Button
-                  href={routes.login}
-                  variant="primary"
-                  size="md"
-                  className="w-full"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t("nav.login")}
-                </Button>
-              )}
-            </div>
           </div>
         )}
       </header>

@@ -42,7 +42,11 @@ export function Button({
 
   const buttonProps = props as React.ButtonHTMLAttributes<HTMLButtonElement>;
   return (
-    <button type="button" className={classes} {...buttonProps}>
+    <button
+      type={buttonProps.type ?? "button"}
+      className={classes}
+      {...buttonProps}
+    >
       {children}
     </button>
   );

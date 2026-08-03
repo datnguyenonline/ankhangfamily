@@ -3,6 +3,7 @@ import { gradeSlug } from "@/lib/math/routes";
 export const routes = {
   home: "/",
   login: "/login",
+  settings: "/settings",
   elearning: "/elearning",
   games: "/games",
   chess: "/games/chess",

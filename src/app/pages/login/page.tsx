@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState, Suspense } from "react";
-import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
-import { ThemeSwitcher } from "@/app/components/ThemeSwitcher";
+import { AvatarTrigger } from "@/app/components/AvatarTrigger";
 import { useTranslation } from "@/lib/i18n/context";
+import { routes } from "@/lib/routes";
 
 function LoginForm() {
   const router = useRouter();
@@ -45,8 +46,7 @@ function LoginForm() {
       <div className="glow-orb left-1/2 top-1/4 h-96 w-96 -translate-x-1/2 bg-green-600/10" />
 
       <div className="safe-top absolute right-3 top-0 flex items-center gap-2 sm:right-4">
-        <ThemeSwitcher />
-        <LanguageSwitcher />
+        <AvatarTrigger />
       </div>
 
       <div className="relative w-full max-w-md">
@@ -120,7 +120,10 @@ function LoginForm() {
         </form>
 
         <p className="mt-6 text-center text-xs text-green-700/80">
-          {t("login.optional")}
+          {t("login.optional")}{" "}
+          <Link href={routes.settings} className="text-green-500 hover:text-green-400">
+            {t("nav.settings")}
+          </Link>
         </p>
       </div>
     </div>

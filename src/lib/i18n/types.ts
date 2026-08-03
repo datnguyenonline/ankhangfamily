@@ -18,6 +18,7 @@ export type Dictionary = {
     leaderboard: string;
     login: string;
     logout: string;
+    settings: string;
     menu: string;
     closeMenu: string;
   };
@@ -47,6 +48,25 @@ export type Dictionary = {
     exitGame: string;
     playAgain: string;
     chooseOtherLevel: string;
+  };
+  settings: {
+    title: string;
+    subtitle: string;
+    open: string;
+    close: string;
+    back: string;
+    changeAvatar: string;
+    hideAvatars: string;
+    guest: string;
+    avatarTitle: string;
+    avatarDesc: string;
+    themeDesc: string;
+    languageTitle: string;
+    languageDesc: string;
+    accountTitle: string;
+    accountGuestDesc: string;
+    accountLoggedInDesc: string;
+    fullLoginPage: string;
   };
   home: {
     family: string;

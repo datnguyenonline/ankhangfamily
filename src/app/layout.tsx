@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/app/components/Providers";
+import { AppChrome } from "@/app/components/AppChrome";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { getTheme } from "@/lib/theme/server";
 import "./globals.css";
@@ -49,7 +50,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full antialiased">
         <Providers locale={locale} theme={theme}>
-          {children}
+          <AppChrome>{children}</AppChrome>
         </Providers>
       </body>
     </html>
