@@ -12,9 +12,24 @@ import {
 
 export const CODING_GRID_SIZE = 6;
 export const CODING_LEVEL_COUNT = 10;
-const MAX_GENERATION_ATTEMPTS = 300;
+const MAX_GENERATION_ATTEMPTS = 400;
 
 export { wallCountForLevel };
+
+const CORNER_LAYOUTS: Array<{
+  start: Position;
+  goal: Position;
+  dir: Direction;
+}> = [
+  { start: { row: 0, col: 0 }, goal: { row: 5, col: 5 }, dir: 1 },
+  { start: { row: 0, col: 0 }, goal: { row: 5, col: 5 }, dir: 2 },
+  { start: { row: 0, col: 5 }, goal: { row: 5, col: 0 }, dir: 3 },
+  { start: { row: 0, col: 5 }, goal: { row: 5, col: 0 }, dir: 2 },
+  { start: { row: 5, col: 5 }, goal: { row: 0, col: 0 }, dir: 3 },
+  { start: { row: 5, col: 5 }, goal: { row: 0, col: 0 }, dir: 0 },
+  { start: { row: 5, col: 0 }, goal: { row: 0, col: 5 }, dir: 1 },
+  { start: { row: 5, col: 0 }, goal: { row: 0, col: 5 }, dir: 0 },
+];
 
 function shuffle<T>(items: T[]): T[] {
   const arr = [...items];
@@ -29,10 +44,16 @@ function posKey(row: number, col: number) {
   return `${row},${col}`;
 }
 
-function allCells(size: number): Position[] {
+function wallableCells(
+  size: number,
+  start: Position,
+  goal: Position
+): Position[] {
   const cells: Position[] = [];
   for (let row = 0; row < size; row += 1) {
     for (let col = 0; col < size; col += 1) {
+      if (row === start.row && col === start.col) continue;
+      if (row === goal.row && col === goal.col) continue;
       cells.push({ row, col });
     }
   }
@@ -70,23 +91,27 @@ function isSolvable(level: CodingLevel, maxCommands: number): boolean {
   return false;
 }
 
+function pickCornerLayout(): (typeof CORNER_LAYOUTS)[number] {
+  return CORNER_LAYOUTS[Math.floor(Math.random() * CORNER_LAYOUTS.length)];
+}
+
 export function generateCodingLevel(level: number): CodingLevel {
   const size = CODING_GRID_SIZE;
   const wallCount = wallCountForLevel(level);
   const maxCommands = maxCommandsForLevel(level);
 
   for (let attempt = 0; attempt < MAX_GENERATION_ATTEMPTS; attempt += 1) {
-    const cells = shuffle(allCells(size));
-    const startCell = cells[0];
-    const goalCell = cells[1];
-    const dir = Math.floor(Math.random() * 4) as Direction;
-    const walls = cells.slice(2, 2 + wallCount);
+    const layout = pickCornerLayout();
+    const candidates = shuffle(
+      wallableCells(size, layout.start, layout.goal)
+    );
+    const walls = candidates.slice(0, wallCount);
 
     const candidate: CodingLevel = {
       level,
       size,
-      start: { ...startCell, dir },
-      goal: goalCell,
+      start: { ...layout.start, dir: layout.dir },
+      goal: layout.goal,
       walls,
       maxCommands,
     };
@@ -99,36 +124,23 @@ export function generateCodingLevel(level: number): CodingLevel {
   return generateCodingLevelFallback(level);
 }
 
-/** Sparse layout if random generation fails at high wall counts. */
 function generateCodingLevelFallback(level: number): CodingLevel {
   const size = CODING_GRID_SIZE;
   const maxCommands = maxCommandsForLevel(level);
-  const wallCount = Math.min(wallCountForLevel(level), size * size - 4);
+  const wallCount = wallCountForLevel(level);
+  const layout = CORNER_LAYOUTS[0];
 
   for (let attempt = 0; attempt < MAX_GENERATION_ATTEMPTS; attempt += 1) {
-    const walls: Position[] = [];
-    const blocked = new Set<string>();
-
-    while (walls.length < wallCount) {
-      const row = Math.floor(Math.random() * size);
-      const col = Math.floor(Math.random() * size);
-      const key = posKey(row, col);
-      if (blocked.has(key)) continue;
-      blocked.add(key);
-      walls.push({ row, col });
-    }
-
-    const free = allCells(size).filter(
-      (cell) => !blocked.has(posKey(cell.row, cell.col))
+    const walls = shuffle(wallableCells(size, layout.start, layout.goal)).slice(
+      0,
+      wallCount
     );
-    const [startCell, goalCell] = shuffle(free);
-    const dir = Math.floor(Math.random() * 4) as Direction;
 
     const candidate: CodingLevel = {
       level,
       size,
-      start: { ...startCell, dir },
-      goal: goalCell,
+      start: { ...layout.start, dir: layout.dir },
+      goal: layout.goal,
       walls,
       maxCommands,
     };
@@ -142,7 +154,7 @@ function generateCodingLevelFallback(level: number): CodingLevel {
     level,
     size,
     start: { row: 0, col: 0, dir: 1 },
-    goal: { row: size - 1, col: size - 1 },
+    goal: { row: 5, col: 5 },
     walls: [
       { row: 1, col: 1 },
       { row: 1, col: 2 },

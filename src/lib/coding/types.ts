@@ -44,7 +44,7 @@ export function maxCommandsForLevel(level: number): number {
 }
 
 export function wallCountForLevel(level: number): number {
-  return 6 + (level - 1) * 2;
+  return 5 + level;
 }
 
 export const DIRECTION_DELTAS: Record<Direction, Position> = {
