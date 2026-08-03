@@ -20,6 +20,29 @@ export type CodingLevel = {
   maxCommands: number;
 };
 
+export type CodingDifficulty = {
+  level: number;
+  points: number;
+  maxCommands: number;
+};
+
+export const CODING_DIFFICULTIES: CodingDifficulty[] = [
+  { level: 1, points: 5, maxCommands: 6 },
+  { level: 2, points: 10, maxCommands: 6 },
+  { level: 3, points: 15, maxCommands: 6 },
+  { level: 4, points: 20, maxCommands: 6 },
+  { level: 5, points: 25, maxCommands: 8 },
+  { level: 6, points: 30, maxCommands: 10 },
+  { level: 7, points: 35, maxCommands: 12 },
+  { level: 8, points: 40, maxCommands: 12 },
+  { level: 9, points: 45, maxCommands: 14 },
+  { level: 10, points: 50, maxCommands: 16 },
+];
+
+export function getCodingDifficulty(level: number): CodingDifficulty {
+  return CODING_DIFFICULTIES[level - 1] ?? CODING_DIFFICULTIES[0];
+}
+
 export const DIRECTION_DELTAS: Record<Direction, Position> = {
   0: { row: -1, col: 0 },
   1: { row: 0, col: 1 },

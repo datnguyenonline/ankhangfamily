@@ -4,8 +4,8 @@ import { useCallback, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { CODING_LEVELS } from "@/lib/coding/levels";
 import {
+  CODING_DIFFICULTIES,
   DIRECTION_ARROWS,
-  pointsForLevel,
   simulateCommands,
   type Command,
   type CodingLevel,
@@ -42,7 +42,7 @@ export function CodingGame() {
     () =>
       CODING_LEVELS.map((level, index) => ({
         ...level,
-        points: pointsForLevel(level.level),
+        points: CODING_DIFFICULTIES[index].points,
         label: dictionary.coding.levels[index].label,
         description: dictionary.coding.levels[index].description,
       })),
@@ -157,9 +157,9 @@ export function CodingGame() {
 
   if (phase === "menu") {
     return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
+      <div className="mx-auto w-full max-w-lg space-y-4 sm:max-w-2xl">
         <p className="text-center text-sm text-green-300/70">{t("coding.menuDesc")}</p>
-        <div className="grid gap-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           {levels.map((level) => (
             <button
               key={level.level}
@@ -167,10 +167,15 @@ export function CodingGame() {
               onClick={() => startLevel(level)}
               className={`${interactiveCardClass} w-full p-4 text-left`}
             >
-              <p className="font-display text-lg font-semibold text-green-50">
-                {level.label}
-              </p>
-              <p className="mt-1 text-sm text-green-400/70">{level.description}</p>
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-display text-lg font-bold text-green-50">
+                  {level.label}
+                </span>
+                <span className="shrink-0 rounded-full bg-green-950/80 px-2.5 py-0.5 text-xs font-semibold text-green-400 ring-1 ring-green-800/40">
+                  +{level.points} {t("common.points")}
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-green-300/55">{level.description}</p>
             </button>
           ))}
         </div>
@@ -203,9 +208,14 @@ export function CodingGame() {
   return (
     <div className="mx-auto w-full max-w-lg space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <p className="font-display text-lg font-semibold text-green-50">
-          {activeLevel.label}
-        </p>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-green-500">
+            {activeLevel.label}
+          </p>
+          <p className="font-display text-sm font-semibold text-green-50/80">
+            +{activeLevel.points} {t("common.points")}
+          </p>
+        </div>
         <p className="text-sm text-green-500">
           {t("coding.commandCount", {
             count: commands.length,

@@ -182,7 +182,7 @@ export const en: Dictionary = {
     },
     coding: {
       title: "Robot Coding",
-      description: "Command a robot to the star — 10 levels for elementary kids",
+      description: "Command a robot to the star — 10 difficulty levels for elementary kids",
       tags: ["Coding", "10 levels"],
     },
     typing: {
@@ -248,10 +248,10 @@ export const en: Dictionary = {
   coding: {
     title: "Robot Coding",
     subtitle:
-      "10 levels from easy to hard. Use Forward · Turn left · Turn right to reach ⭐.",
+      "10 difficulty levels from easy to expert. Use Forward · Turn left · Turn right to reach ⭐.",
     familyGames: "Family games",
     menuDesc:
-      "Pick a level. Add commands then Run — earn 5–50 points by level.",
+      "Pick a difficulty to start. Complete a level to earn 5–50 points by level.",
     buildHint: "Add commands then tap Run to move the robot",
     forward: "Forward",
     turnLeft: "Turn left",
@@ -269,16 +269,16 @@ export const en: Dictionary = {
     complete: "Complete! +{points} pts",
     scoreFailed: "Could not save points — try again later",
     levels: [
-      { label: "Level 1", description: "Go straight — learn Forward" },
-      { label: "Level 2", description: "Go up — multiple Forward steps" },
-      { label: "Level 3", description: "Go sideways — turn then forward" },
-      { label: "Level 4", description: "Go down — think about direction" },
-      { label: "Level 5", description: "Avoid wall — take a detour" },
-      { label: "Level 6", description: "Go around obstacles" },
-      { label: "Level 7", description: "Blocked path — find another way" },
-      { label: "Level 8", description: "Narrow corridor — more turns" },
-      { label: "Level 9", description: "Small maze — plan carefully" },
-      { label: "Level 10", description: "Challenge — many walls" },
+      { label: "Level 1", description: "Very easy — go straight to the star" },
+      { label: "Level 2", description: "Easy — multiple Forward steps" },
+      { label: "Level 3", description: "Basic — turn then move forward" },
+      { label: "Level 4", description: "Medium — think about direction" },
+      { label: "Level 5", description: "Fair — avoid one obstacle" },
+      { label: "Level 6", description: "Good — route around walls" },
+      { label: "Level 7", description: "Strong — blocked path" },
+      { label: "Level 8", description: "Very hard — narrow corridor" },
+      { label: "Level 9", description: "Excellent — small maze" },
+      { label: "Level 10", description: "Expert — many walls" },
     ],
   },
   typing: {

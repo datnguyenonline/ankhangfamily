@@ -182,8 +182,8 @@ export const vi: Dictionary = {
     },
     coding: {
       title: "Robot lập trình",
-      description: "Sắp lệnh dẫn robot tới sao — 10 màn, phù hợp tiểu học",
-      tags: ["Lập trình", "10 màn"],
+      description: "Sắp lệnh dẫn robot tới sao — 10 cấp độ, phù hợp tiểu học",
+      tags: ["Lập trình", "10 cấp độ"],
     },
     typing: {
       title: "Luyện gõ chữ",
@@ -249,10 +249,10 @@ export const vi: Dictionary = {
   coding: {
     title: "Robot lập trình",
     subtitle:
-      "10 màn từ dễ đến khó. Sắp lệnh Tiến · Quay trái · Quay phải để robot tới ⭐.",
+      "10 cấp độ từ dễ đến siêu khó. Sắp lệnh Tiến · Quay trái · Quay phải để robot tới ⭐.",
     familyGames: "Trò chơi gia đình",
     menuDesc:
-      "Chọn màn chơi. Thêm lệnh rồi bấm Chạy — hoàn thành nhận 5–50 điểm theo cấp.",
+      "Chọn độ khó để bắt đầu. Hoàn thành màn chơi nhận 5–50 điểm theo cấp độ.",
     buildHint: "Thêm lệnh rồi bấm Chạy để robot di chuyển",
     forward: "Tiến",
     turnLeft: "Quay trái",
@@ -270,16 +270,16 @@ export const vi: Dictionary = {
     complete: "Hoàn thành! +{points} điểm",
     scoreFailed: "Không lưu được điểm — thử lại sau",
     levels: [
-      { label: "Màn 1", description: "Đi thẳng — làm quen lệnh Tiến" },
-      { label: "Màn 2", description: "Đi lên — nhiều bước Tiến" },
-      { label: "Màn 3", description: "Đi ngang — quay hướng rồi tiến" },
-      { label: "Màn 4", description: "Đi xuống — tư duy hướng đi" },
-      { label: "Màn 5", description: "Tránh tường — quay đường vòng" },
-      { label: "Màn 6", description: "Đi vòng — né chướng ngại" },
-      { label: "Màn 7", description: "Đường bị chặn — tìm lối khác" },
-      { label: "Màn 8", description: "Hành lang hẹp — quay nhiều hơn" },
-      { label: "Màn 9", description: "Mê cung nhỏ — suy nghĩ kỹ" },
-      { label: "Màn 10", description: "Thử thách — nhiều tường" },
+      { label: "Cấp 1", description: "Rất dễ — đi thẳng tới sao" },
+      { label: "Cấp 2", description: "Dễ — nhiều bước Tiến" },
+      { label: "Cấp 3", description: "Cơ bản — quay hướng rồi tiến" },
+      { label: "Cấp 4", description: "Trung bình — tư duy hướng đi" },
+      { label: "Cấp 5", description: "Khá — tránh một chướng ngại" },
+      { label: "Cấp 6", description: "Tốt — đi vòng qua tường" },
+      { label: "Cấp 7", description: "Mạnh — đường bị chặn" },
+      { label: "Cấp 8", description: "Rất khó — hành lang hẹp" },
+      { label: "Cấp 9", description: "Xuất sắc — mê cung nhỏ" },
+      { label: "Cấp 10", description: "Siêu cấp — nhiều tường" },
     ],
   },
   typing: {

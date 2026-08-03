@@ -36,9 +36,9 @@ export const CODING_LEVELS: CodingLevel[] = [
   {
     level: 5,
     size: 5,
-    start: { row: 4, col: 0, dir: 1 },
+    start: { row: 2, col: 0, dir: 1 },
     goal: { row: 4, col: 4 },
-    walls: [{ row: 4, col: 2 }],
+    walls: [{ row: 2, col: 2 }],
     maxCommands: 8,
   },
   {
@@ -56,13 +56,12 @@ export const CODING_LEVELS: CodingLevel[] = [
     level: 7,
     size: 5,
     start: { row: 0, col: 0, dir: 1 },
-    goal: { row: 0, col: 4 },
+    goal: { row: 4, col: 4 },
     walls: [
       { row: 0, col: 2 },
       { row: 1, col: 2 },
-      { row: 2, col: 2 },
     ],
-    maxCommands: 10,
+    maxCommands: 12,
   },
   {
     level: 8,
