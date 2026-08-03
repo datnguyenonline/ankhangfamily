@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
+import { gradeSlug } from "@/lib/math/routes";
 import { gradeLabel } from "@/lib/math/types";
 
 type QuizResult = {
@@ -149,7 +150,7 @@ export default function KetQuaPage() {
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
-            href={`/on-tap-toan/lop-${result.grade}/lam-bai`}
+            href={`/on-tap-toan/${gradeSlug(result.grade)}/lam-bai`}
             className="rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-3 font-semibold text-black"
           >
             Làm bài mới

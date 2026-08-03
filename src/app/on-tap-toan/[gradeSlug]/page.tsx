@@ -2,21 +2,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { getQuestionCount } from "@/lib/math/questions";
+import { parseGradeSlug, gradeSlug } from "@/lib/math/routes";
 import { BOOK_NAME, GRADES, QUIZ_SIZE, gradeLabel } from "@/lib/math/types";
 
 type Props = {
-  params: Promise<{ grade: string }>;
+  params: Promise<{ gradeSlug: string }>;
 };
 
 export function generateStaticParams() {
-  return GRADES.map((g) => ({ grade: String(g) }));
+  return GRADES.map((g) => ({ gradeSlug: gradeSlug(g) }));
 }
 
 export default async function GradePage({ params }: Props) {
-  const { grade: gradeStr } = await params;
-  const grade = Number(gradeStr);
+  const { gradeSlug: slug } = await params;
+  const grade = parseGradeSlug(slug);
 
-  if (!GRADES.includes(grade as (typeof GRADES)[number])) {
+  if (grade === null) {
     notFound();
   }
 
@@ -53,7 +54,7 @@ export default async function GradePage({ params }: Props) {
             </li>
             <li className="flex gap-2">
               <span className="text-green-500">✓</span>
-              Điểm được cộng vào bảng xếp hạng
+              Điểm được cộng vào bảng xếp hạng khi đăng nhập
             </li>
             <li className="flex gap-2">
               <span className="text-green-500">✓</span>
@@ -62,7 +63,7 @@ export default async function GradePage({ params }: Props) {
           </ul>
 
           <Link
-            href={`/on-tap-toan/lop-${grade}/lam-bai`}
+            href={`/on-tap-toan/${slug}/lam-bai`}
             className="mt-8 inline-block rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-10 py-3.5 font-semibold text-black transition-all hover:from-green-500 hover:to-emerald-400 hover:shadow-[0_0_30px_-5px_rgba(34,197,94,0.5)]"
           >
             Bắt đầu làm bài

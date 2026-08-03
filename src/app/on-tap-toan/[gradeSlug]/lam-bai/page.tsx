@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Header } from "@/components/Header";
+import { parseGradeSlug } from "@/lib/math/routes";
 import { gradeLabel } from "@/lib/math/types";
 
 type QuizQuestion = {
@@ -18,7 +19,8 @@ type QuizQuestion = {
 export default function LamBaiPage() {
   const params = useParams();
   const router = useRouter();
-  const grade = Number(params.grade);
+  const gradeSlug = params.gradeSlug as string;
+  const grade = useMemo(() => parseGradeSlug(gradeSlug), [gradeSlug]);
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -28,6 +30,7 @@ export default function LamBaiPage() {
   const [error, setError] = useState("");
 
   const fetchQuiz = useCallback(async () => {
+    if (grade === null) return;
     setLoading(true);
     setError("");
     try {
@@ -45,7 +48,12 @@ export default function LamBaiPage() {
   }, [grade]);
 
   useEffect(() => {
-    if (grade >= 1 && grade <= 5) fetchQuiz();
+    if (grade === null) {
+      setLoading(false);
+      setError("Lớp không hợp lệ");
+      return;
+    }
+    fetchQuiz();
   }, [grade, fetchQuiz]);
 
   function selectAnswer(optionIndex: number) {
@@ -55,6 +63,7 @@ export default function LamBaiPage() {
   }
 
   async function handleSubmit() {
+    if (grade === null) return;
     if (answers.some((a) => a === -1)) {
       setError("Vui lòng trả lời hết tất cả câu hỏi");
       return;
@@ -82,6 +91,17 @@ export default function LamBaiPage() {
       setError("Lỗi nộp bài. Vui lòng thử lại.");
       setSubmitting(false);
     }
+  }
+
+  if (grade === null) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#050805]">
+        <p className="text-red-400">Lớp không hợp lệ</p>
+        <Link href="/on-tap-toan" className="rounded-lg bg-green-600 px-4 py-2 text-black">
+          Về trang ôn tập
+        </Link>
+      </div>
+    );
   }
 
   if (loading) {
@@ -116,7 +136,7 @@ export default function LamBaiPage() {
       <main className="relative mx-auto max-w-2xl px-4 py-8 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <Link
-            href={`/on-tap-toan/lop-${grade}`}
+            href={`/on-tap-toan/${gradeSlug}`}
             className="text-sm text-green-500/70 hover:text-green-400"
           >
             ← Quay lại

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { getQuestionCount } from "@/lib/math/questions";
+import { gradeSlug } from "@/lib/math/routes";
 import { BOOK_NAME, GRADES, gradeLabel } from "@/lib/math/types";
 
 export default function OnTapToanPage() {
@@ -35,7 +36,7 @@ export default function OnTapToanPage() {
           {GRADES.map((grade) => (
             <Link
               key={grade}
-              href={`/on-tap-toan/lop-${grade}`}
+              href={`/on-tap-toan/${gradeSlug(grade)}`}
               className="group rounded-2xl border border-green-900/40 bg-[#0d120d] p-6 transition-all hover:border-green-600/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.25)]"
             >
               <span className="text-3xl">🔢</span>
