@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import type { MathQuestion } from "./types";
-import { pickRandomQuestions, QUIZ_SIZE } from "./types";
+import { assertUniqueQuizQuestions, pickRandomQuestions, QUIZ_SIZE } from "./types";
 
 const cache = new Map<number, MathQuestion[]>();
 
@@ -23,7 +23,9 @@ function loadGradeQuestions(grade: number): MathQuestion[] {
 
 export function getRandomQuizQuestions(grade: number): MathQuestion[] {
   const all = loadGradeQuestions(grade);
-  return pickRandomQuestions(all, QUIZ_SIZE);
+  const picked = pickRandomQuestions(all, QUIZ_SIZE);
+  assertUniqueQuizQuestions(picked);
+  return picked;
 }
 
 export function getQuestionCount(grade: number): number {

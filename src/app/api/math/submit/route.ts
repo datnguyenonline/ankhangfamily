@@ -46,6 +46,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid questions" }, { status: 400 });
   }
 
+  if (new Set(questionIds).size !== questionIds.length) {
+    return NextResponse.json({ error: "Duplicate questions in submission" }, { status: 400 });
+  }
+
+  const texts = questions.map((q) => q.question.trim());
+  if (new Set(texts).size !== texts.length) {
+    return NextResponse.json({ error: "Duplicate questions in submission" }, { status: 400 });
+  }
+
   const { correct, details } = validateAnswers(questions, answers);
   const score = calculateScore(correct, questions.length);
 

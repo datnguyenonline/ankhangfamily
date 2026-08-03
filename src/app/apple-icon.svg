@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <rect width="180" height="180" rx="40" fill="#050805"/>
+  <rect x="4" y="4" width="172" height="172" rx="36" stroke="#22c55e" stroke-opacity="0.35" stroke-width="3"/>
+  <defs>
+    <linearGradient id="g" x1="30" y1="30" x2="150" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4ade80"/>
+      <stop offset="1" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+  <text x="90" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="800" fill="url(#g)">AK</text>
+</svg>

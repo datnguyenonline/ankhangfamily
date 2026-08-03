@@ -40,7 +40,35 @@ export function pickRandomQuestions(
   questions: MathQuestion[],
   count: number
 ): MathQuestion[] {
-  return shuffleArray(questions).slice(0, count);
+  const shuffled = shuffleArray(questions);
+  const picked: MathQuestion[] = [];
+  const seenIds = new Set<string>();
+  const seenTexts = new Set<string>();
+
+  for (const q of shuffled) {
+    const textKey = q.question.trim();
+    if (seenIds.has(q.id) || seenTexts.has(textKey)) continue;
+
+    seenIds.add(q.id);
+    seenTexts.add(textKey);
+    picked.push(q);
+
+    if (picked.length >= count) break;
+  }
+
+  return picked;
+}
+
+export function assertUniqueQuizQuestions(questions: MathQuestion[]): void {
+  const ids = questions.map((q) => q.id);
+  const texts = questions.map((q) => q.question.trim());
+
+  if (new Set(ids).size !== ids.length) {
+    throw new Error("Quiz contains duplicate question ids");
+  }
+  if (new Set(texts).size !== texts.length) {
+    throw new Error("Quiz contains duplicate question texts");
+  }
 }
 
 export function calculateScore(correct: number, total: number): number {
