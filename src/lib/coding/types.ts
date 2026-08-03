@@ -27,20 +27,24 @@ export type CodingDifficulty = {
 };
 
 export const CODING_DIFFICULTIES: CodingDifficulty[] = [
-  { level: 1, points: 5, maxCommands: 14 },
-  { level: 2, points: 10, maxCommands: 16 },
-  { level: 3, points: 15, maxCommands: 18 },
-  { level: 4, points: 20, maxCommands: 20 },
-  { level: 5, points: 25, maxCommands: 18 },
-  { level: 6, points: 30, maxCommands: 22 },
-  { level: 7, points: 35, maxCommands: 24 },
-  { level: 8, points: 40, maxCommands: 24 },
-  { level: 9, points: 45, maxCommands: 26 },
-  { level: 10, points: 50, maxCommands: 28 },
+  { level: 1, points: 5, maxCommands: 16 },
+  { level: 2, points: 10, maxCommands: 18 },
+  { level: 3, points: 15, maxCommands: 20 },
+  { level: 4, points: 20, maxCommands: 22 },
+  { level: 5, points: 25, maxCommands: 24 },
+  { level: 6, points: 30, maxCommands: 26 },
+  { level: 7, points: 35, maxCommands: 28 },
+  { level: 8, points: 40, maxCommands: 30 },
+  { level: 9, points: 45, maxCommands: 32 },
+  { level: 10, points: 50, maxCommands: 34 },
 ];
 
-export function getCodingDifficulty(level: number): CodingDifficulty {
-  return CODING_DIFFICULTIES[level - 1] ?? CODING_DIFFICULTIES[0];
+export function maxCommandsForLevel(level: number): number {
+  return 14 + level * 2;
+}
+
+export function wallCountForLevel(level: number): number {
+  return 6 + (level - 1) * 2;
 }
 
 export const DIRECTION_DELTAS: Record<Direction, Position> = {

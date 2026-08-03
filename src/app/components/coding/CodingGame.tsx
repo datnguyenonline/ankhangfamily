@@ -2,10 +2,11 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-import { CODING_LEVELS } from "@/lib/coding/levels";
+import { generateCodingLevel } from "@/lib/coding/generator";
 import {
   CODING_DIFFICULTIES,
   DIRECTION_ARROWS,
+  maxCommandsForLevel,
   simulateCommands,
   type Command,
   type CodingLevel,
@@ -18,10 +19,12 @@ import { interactiveCardClass } from "@/app/components/ui/buttonStyles";
 
 type GamePhase = "menu" | "playing" | "won";
 
-type GameLevel = CodingLevel & {
+type GameLevel = {
+  level: number;
   points: number;
   label: string;
   description: string;
+  maxCommands: number;
 };
 
 const COMMAND_ICONS: Record<Command, string> = {
@@ -40,9 +43,10 @@ export function CodingGame() {
 
   const levels = useMemo<GameLevel[]>(
     () =>
-      CODING_LEVELS.map((level, index) => ({
-        ...level,
-        points: CODING_DIFFICULTIES[index].points,
+      CODING_DIFFICULTIES.map((difficulty, index) => ({
+        level: difficulty.level,
+        points: difficulty.points,
+        maxCommands: maxCommandsForLevel(difficulty.level),
         label: dictionary.coding.levels[index].label,
         description: dictionary.coding.levels[index].description,
       })),
@@ -50,7 +54,8 @@ export function CodingGame() {
   );
 
   const [phase, setPhase] = useState<GamePhase>("menu");
-  const [activeLevel, setActiveLevel] = useState<GameLevel | null>(null);
+  const [activeLevel, setActiveLevel] = useState<CodingLevel | null>(null);
+  const [activeMeta, setActiveMeta] = useState<GameLevel | null>(null);
   const [commands, setCommands] = useState<Command[]>([]);
   const [robot, setRobot] = useState<RobotState | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -64,9 +69,11 @@ export function CodingGame() {
   }, [activeLevel]);
 
   const startLevel = (level: GameLevel) => {
-    setActiveLevel(level);
+    const puzzle = generateCodingLevel(level.level);
+    setActiveLevel(puzzle);
+    setActiveMeta(level);
     setCommands([]);
-    setRobot({ ...level.start });
+    setRobot({ ...puzzle.start });
     setPhase("playing");
     setStatusText(t("coding.buildHint"));
     setLastPoints(null);
@@ -91,11 +98,11 @@ export function CodingGame() {
   }, []);
 
   const finishWin = useCallback(
-    (level: GameLevel) => {
+    (meta: GameLevel) => {
       setPhase("won");
-      setLastPoints(level.points);
-      setStatusText(t("coding.complete", { points: level.points }));
-      void saveWinScore(level.level, level.points);
+      setLastPoints(meta.points);
+      setStatusText(t("coding.complete", { points: meta.points }));
+      void saveWinScore(meta.level, meta.points);
     },
     [saveWinScore, t]
   );
@@ -142,17 +149,15 @@ export function CodingGame() {
 
     if (result.crashed) {
       setStatusText(t("coding.crashed"));
-      setRobot({ ...activeLevel.start });
       return;
     }
 
     if (result.reachedGoal) {
-      finishWin(activeLevel);
+      if (activeMeta) finishWin(activeMeta);
       return;
     }
 
     setStatusText(t("coding.missedGoal"));
-    setRobot({ ...activeLevel.start });
   };
 
   if (phase === "menu") {
@@ -183,7 +188,7 @@ export function CodingGame() {
     );
   }
 
-  if (phase === "won" && activeLevel) {
+  if (phase === "won" && activeMeta) {
     return (
       <GameResultPanel
         title={t("coding.winTitle")}
@@ -195,13 +200,13 @@ export function CodingGame() {
               ? t("coding.scoreFailed")
               : t("common.loginToSave")
         }
-        onPlayAgain={() => startLevel(activeLevel)}
+        onPlayAgain={() => startLevel(activeMeta)}
         onChooseLevel={() => setPhase("menu")}
       />
     );
   }
 
-  if (!activeLevel || !robot) return null;
+  if (!activeLevel || !activeMeta || !robot) return null;
 
   const cellSize = Math.min(56, Math.floor(336 / activeLevel.size));
 
@@ -210,10 +215,10 @@ export function CodingGame() {
       <div className="flex items-center justify-between gap-2">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-green-500">
-            {activeLevel.label}
+            {activeMeta.label}
           </p>
           <p className="font-display text-sm font-semibold text-green-50/80">
-            +{activeLevel.points} {t("common.points")}
+            +{activeMeta.points} {t("common.points")}
           </p>
         </div>
         <p className="text-sm text-green-500">

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { getCodingLevel } from "@/lib/coding/levels";
 import { pointsForLevel } from "@/lib/coding/types";
 import { addScore } from "@/lib/scores";
 
@@ -11,8 +10,6 @@ export async function POST(request: Request) {
   if (!level || level < 1 || level > 10) {
     return NextResponse.json({ error: "Invalid level" }, { status: 400 });
   }
-
-  getCodingLevel(level);
 
   const expectedPoints = pointsForLevel(level);
   if (points !== expectedPoints) {
