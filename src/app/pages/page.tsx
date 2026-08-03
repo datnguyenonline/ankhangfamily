@@ -119,7 +119,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:gap-4">
               {elearningCategory.items.map((item) => (
                 <ResourceCard key={item.id} item={item} />
               ))}
@@ -148,7 +148,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:gap-4">
               {gamesCategory.items.map((item) => (
                 <ResourceCard key={item.id} item={item} />
               ))}
